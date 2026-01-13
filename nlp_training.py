@@ -50,6 +50,7 @@ def train_model(nlp, training_data, interations=150):
         print(f"NLP training {int_perc}% completed")
         perc += fix_perc
     print("Training completed!")
+    return nlp
 
 def get_intent(it, nlp, text):
     doc = nlp(text)
