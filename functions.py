@@ -32,3 +32,17 @@ def open_p(p_path):
         system(command)
         return "1"
 
+def update_sys():
+    print("Starting full system update. This can take a while to finish.")
+    result = subprocess.run(
+        ["pacman", "-Syu", "--noconfirm"],
+        stdout=subprocess.DEVNULL,   # hide standard output
+        stderr=subprocess.DEVNULL    # hide error output
+    )
+
+    if result.returncode == 0:
+        print("Command executed successfully")
+    else:
+        print("Command failed")
+
+
