@@ -52,4 +52,8 @@ if verb.lemma_ == "open":
                 print(f"Extra object detected: {ent.text}")
         
         p_path = functions.get_p_path(p_name)
+<<<<<<< Updated upstream
         functions.open_p(p_path)
+=======
+        functions.open_p(p_path)
+>>>>>>> Stashed changes
