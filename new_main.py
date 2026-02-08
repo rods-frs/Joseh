@@ -2,7 +2,6 @@
 import spacy
 from os import system
 import functions
-
 #spacy preparation
 sysup_nlp = spacy.load("sys_up_model")
 reqdate_nlp = spacy.load("req_date_model")
@@ -19,9 +18,9 @@ while not program_break:
     if usr_input == "exit":
         program_break = True
 
-    sys_up_intent = get_intent("update_system", sysup_nlp, usr_input)
-    req_date_intent = get_intent("request_date", reqdate_nlp, usr_input)
-    open_program_intent = get_intent("open_program", openprog_int_nlp, usr_input)
+    sys_up_intent = functions.get_intent("update_system", sysup_nlp, usr_input)
+    req_date_intent = functions.get_intent("request_date", reqdate_nlp, usr_input)
+    open_program_intent = functions.get_intent("open_program", openprog_int_nlp, usr_input)
 
 
     if sys_up_intent:
