@@ -2,9 +2,6 @@
 import spacy
 from os import system
 import functions
-import spacy
-
-#global variables
 
 #spacy preparation
 sysup_nlp = spacy.load("sys_up_model")
@@ -13,12 +10,11 @@ openprog_nlp = spacy.load("get_program_name_model")
 openprog_int_nlp = spacy.load("open_program_model")
 
 #main logic
-doc = nlp(str(input(">> ")))
 
-verb = functions.get_verb(doc)
-print(f"Verb found: {verb}")
+program_break = False
 
-if verb.lemma_ == "open":
+while not program_break:
+    usr_input = str(input(">> "))
 
     if usr_input == "exit":
         program_break = True
@@ -52,8 +48,4 @@ if verb.lemma_ == "open":
                 print(f"Extra object detected: {ent.text}")
         
         p_path = functions.get_p_path(p_name)
-<<<<<<< Updated upstream
         functions.open_p(p_path)
-=======
-        functions.open_p(p_path)
->>>>>>> Stashed changes

@@ -32,8 +32,6 @@ def open_p(p_path):
         system(command)
         return "1"
 
-<<<<<<< Updated upstream
-=======
 def update_sys():
     print("Starting full system update. This can take a while to finish.")
     result = subprocess.run(
@@ -52,4 +50,3 @@ def get_intent(it, nlp, text):
     it_prob = doc.cats[it]
     return it_prob > 0.5
 
->>>>>>> Stashed changes
