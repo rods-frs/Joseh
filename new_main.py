@@ -9,9 +9,7 @@ sysup_nlp = spacy.load("sys_up_model")
 reqdate_nlp = spacy.load("req_date_model")
 
 #main logic
-
 program_break = False
-
 while not program_break:
     usr_input = str(input(">> "))
 
