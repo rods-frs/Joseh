@@ -3,8 +3,10 @@
 #packages
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+import spacy
 
 #auth
+
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     client_id="f4dbb04636f34cd183867be4aa645af4",
     client_secret="fa271815bd414006a69636ea96813bfe",
@@ -14,7 +16,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 
 #basic commands
 
-def resume_playback(sp):
+def resume_music(sp):
     current = sp.current_playback()
     if current is not None and not current["is_playing"]:
         sp.start_playback()
@@ -26,7 +28,7 @@ def next_track(sp):
         sp.next_track()
     else: print("There`s no playback running")
 
-def pause_playback(sp):
+def pause_music(sp):
     current = sp.current_playback()   
     if current["is_playing"]:
         sp.pause_playback()
@@ -38,6 +40,23 @@ def get_current_music(sp):
         track = current["item"]
         print(f"Current music: {track["name"]}")
     else: print("There`s no music playing")
+
+def shuffle(sp, shuffle_bool):
+    if shuffle_bool: #0 to turn off, 1 to turn on
+        sp.shuffle(state=True)
+    else: sp.shuffle(state=False)
+    
+def repeat(sp, repeat_bool):
+    if repeat_bool:
+        sp.repeat(state="track")
+    else:
+        sp.repeat(state="off")
+
+def play_music(sp, uri):
+    sp.start_playback(uris=[uri])
+
+def play_playlist(sp, uri):
+    sp.start_playback(context_uri=uri)
 
 #complex commands
 
@@ -54,12 +73,6 @@ def music_search(sp, music_name):
         }
     return search_results
 
-def play_music(sp, uri):
-    sp.start_playback(uris=[uri])
-
-def play_playlist(sp, uri):
-    sp.start_playback(context_uri=uri)
-
 def playlist_search(sp, playlist_name):
     results = sp.search(q=playlist_name, type="playlist", limit=5)
     playlists = [p for p in results["playlists"]["items"] if p is not None] #Ensures that the playlist is not regional locked
@@ -73,7 +86,7 @@ def playlist_search(sp, playlist_name):
             }
     return search_results
 
-def complex_play_playlist(sp, playlist_name):
+def direct_play_playlist(sp, playlist_name):
     playlist_search_results = playlist_search(sp, playlist_name)
     for key, value in playlist_search_results.items():
         if key == "playlist_1":
@@ -85,4 +98,45 @@ def complex_play_playlist(sp, playlist_name):
     playlist_confirmation = int(input(f"PLayling playlist: {to_play_playlist_name}. Type 1 if OK, anything else if NO: "))
     if playlist_confirmation == 1:
         play_playlist(sp, to_play_playlist_uri)
+
+#NLP usage
+
+intention_map = {
+    "resume_music":    resume_music,
+    "next_track":      next_track,
+    "pause_music":     pause_music,
+    "shuffle":         shuffle, #requires training to check if the user wants to turn on or off
+    "repeat":          repeat, #requires training to check if the user wants to turn on or off
+    "get_current_music": get_current_music,
+}
+
+nlp = spacy.load("/home/rodrigo/Documents/GitHub/Joseh/spotify-model-v1")
+
+while True:
+
+    usr_intention = str(input("Whats your command? >> "))
+
+    doc = nlp(usr_intention)
+
+    best_intention = max(doc.cats, key=doc.cats.get)
+    best_score = doc.cats[best_intention]
+
+    if best_score <= 0.5:
+
+        print("Best score less then 0.5! The command have a great chance to not be what you want! ")
+        print("///")
+    
+        
+    if "shuffle" not in best_intention and "repeat" not in best_intention:
+
+        action = intention_map.get(best_intention)
+
+        if action:
+            action(sp)
+
+        print(f"Recognized intention: {best_intention}")
+        
+    else: print("This option is not avaible yet... ")
+
+        
 
