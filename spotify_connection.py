@@ -4,6 +4,8 @@
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import spacy
+import re
+from time import sleep
 
 #auth
 
@@ -99,6 +101,18 @@ def direct_play_playlist(sp, playlist_name):
     if playlist_confirmation == 1:
         play_playlist(sp, to_play_playlist_uri)
 
+def split_usr_command(text):
+    parts = re.split(r'\b(and then|and|also|then)\b|(\s*,\s*)', text, flags=re.IGNORECASE)
+    clean_parts = []
+    for p in parts:
+        if p is None:
+            continue
+        p = p.strip()
+        if p and p.lower() not in ('and', 'then', 'and then', 'also',',', ''):
+            clean_parts.append(p)
+        
+    return clean_parts
+
 #NLP usage
 
 intention_map = {
@@ -110,33 +124,32 @@ intention_map = {
     "get_current_music": get_current_music,
 }
 
-nlp = spacy.load("/home/rodrigo/Documents/GitHub/Joseh/spotify-model-v1")
+nlp = spacy.load("spotify-model-v1")
 
 while True:
 
     usr_intention = str(input("Whats your command? >> "))
 
-    doc = nlp(usr_intention)
+    clauses = split_usr_command(usr_intention)
+    detected = []
 
-    best_intention = max(doc.cats, key=doc.cats.get)
-    best_score = doc.cats[best_intention]
+    for clause in clauses:
+        doc = nlp(clause)
 
-    if best_score <= 0.5:
+        for intent, score in doc.cats.items():
+            if score >= 0.5:
+                print(f"Intent {intent} added!")
+                detected.append(intent)
 
-        print("Best score less then 0.5! The command have a great chance to not be what you want! ")
-        print("///")
-    
-        
-    if "shuffle" not in best_intention and "repeat" not in best_intention:
+    print("="*10)
 
-        action = intention_map.get(best_intention)
+    for intention in detected:
+        action = intention_map.get(intention)
 
         if action:
             action(sp)
-
-        print(f"Recognized intention: {best_intention}")
-        
-    else: print("This option is not avaible yet... ")
+            print(f"Executing command: {intention}")
+            sleep(0.5)
 
         
 
