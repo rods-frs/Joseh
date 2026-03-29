@@ -43,16 +43,17 @@ def get_current_music(sp):
         print(f"Current music: {track["name"]}")
     else: print("There`s no music playing")
 
-def shuffle(sp, shuffle_bool):
-    if shuffle_bool: #0 to turn off, 1 to turn on
-        sp.shuffle(state=True)
-    else: sp.shuffle(state=False)
+def shuffle_on(sp):
+    sp.shuffle(state=True)
+
+def shuffle_off(sp):
+    sp.shuffle(state=False)
     
-def repeat(sp, repeat_bool):
-    if repeat_bool:
-        sp.repeat(state="track")
-    else:
-        sp.repeat(state="off")
+def repeat_on(sp):
+    sp.repeat(state="track")
+
+def repeat_off(sp):
+    sp.repeat(state="off")
 
 def play_music(sp, uri):
     sp.start_playback(uris=[uri])
@@ -119,12 +120,15 @@ intention_map = {
     "resume_music":    resume_music,
     "next_track":      next_track,
     "pause_music":     pause_music,
-    "shuffle":         shuffle, #requires training to check if the user wants to turn on or off
-    "repeat":          repeat, #requires training to check if the user wants to turn on or off
+    "shuffle_off":     shuffle_off, 
+    "repeat_on":        repeat_on, 
+    "repeat_off":       repeat_off,
     "get_current_music": get_current_music,
+    "shuffle_on":       shuffle_on
 }
 
-nlp = spacy.load("spotify-model-v1")
+
+nlp = spacy.load("Joseh/spotify-model-v1")
 
 while True:
 
@@ -135,10 +139,25 @@ while True:
 
     for clause in clauses:
         doc = nlp(clause)
+        clause = str(clause)
 
         for intent, score in doc.cats.items():
             if score >= 0.5:
-                print(f"Intent {intent} added!")
+
+                if intent == "shuffle":
+                    if "on" in clause: 
+                        detected.append("shuffle_on")
+                    else:
+                        detected.append("shuffle_off")
+
+                if intent == "repeat":
+                    if "on" in clause: 
+                        detected.append("repeat_on")
+                    else:
+                        detected.append("repeat_off")
+
+                else:
+                    print(f"Intent {intent} added!")
                 detected.append(intent)
 
     print("="*10)
@@ -149,6 +168,7 @@ while True:
         if action:
             action(sp)
             print(f"Executing command: {intention}")
+            print("=-="*8)
             sleep(0.5)
 
         
