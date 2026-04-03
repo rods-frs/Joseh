@@ -61,7 +61,7 @@ def play_music(sp, uri):
 def play_playlist(sp, uri):
     sp.start_playback(context_uri=uri)
 
-#complex commands
+#base commands
 
 def music_search(sp, music_name):
     results = sp.search(q=music_name, type="track", limit=5)
@@ -89,18 +89,53 @@ def playlist_search(sp, playlist_name):
             }
     return search_results
 
-def direct_play_playlist(sp, playlist_name):
-    playlist_search_results = playlist_search(sp, playlist_name)
-    for key, value in playlist_search_results.items():
-        if key == "playlist_1":
-            to_play_playlist_uri = value["uri"]
-            to_play_playlist_name = value["playlist"]
-            print(to_play_playlist_name)
+#composite commands
 
-    #confirming if the user wants to play the playlist coming from the search
-    playlist_confirmation = int(input(f"PLayling playlist: {to_play_playlist_name}. Type 1 if OK, anything else if NO: "))
-    if playlist_confirmation == 1:
+def direct_playlist_play(sp, usr_input):
+
+    playlist_name = get_playlist_name(usr_input)
+    if playlist_name is not None:
+        playlist_search_results = playlist_search(sp, playlist_name)
+
+        for key, value in playlist_search_results.items():
+            if key == "playlist_1":
+                to_play_playlist_uri = value["uri"]
+                to_play_playlist_name = value["playlist"]
+
+        print(f"Playing {to_play_playlist_name}")
         play_playlist(sp, to_play_playlist_uri)
+    else: print("Playlist name not found...")
+
+def direct_music_play(sp, usr_input):
+
+    music_name = get_music_name(usr_input)
+    search_results = music_search(sp, music_name)
+
+    for key, value in search_results.items():
+        if key == "track_1":
+            m_play = value["uri"]
+            m_name = value["track"]
+
+    print(f"Playing {m_name}")
+    play_music(sp, m_play)
+
+def get_music_name(usr_input):
+    ner_nlp = spacy.load("NER_MODEL")
+    doc = ner_nlp(usr_input)
+    for ent in doc.ents:
+        if ent.label_ == "MUSIC_NAME":
+            print(ent.text)
+            music_name = ent.text
+            return music_name
+
+def get_playlist_name(usr_input):
+    ner_nlp = spacy.load("NER_MODEL_2")
+    doc = ner_nlp(usr_input)
+    for ent in doc.ents:
+        if ent.label_ == "playlist_name":
+            print(ent.text)
+            playlist_name = ent.text
+            return playlist_name
 
 def split_usr_command(text):
     parts = re.split(r'\b(and then|and|also|then)\b|(\s*,\s*)', text, flags=re.IGNORECASE)
@@ -124,52 +159,73 @@ intention_map = {
     "repeat_on":        repeat_on, 
     "repeat_off":       repeat_off,
     "get_current_music": get_current_music,
-    "shuffle_on":       shuffle_on
+    "shuffle_on":       shuffle_on,
+    "play_music":       direct_music_play,
+    "play_playlist":    direct_playlist_play,
+    "search_music":     music_search,   #not done
+    "search_playlist":  playlist_search  #not done
 }
 
 
-nlp = spacy.load("Joseh/spotify-model-v1")
+nlp = spacy.load("spotify-v2")
+
 
 while True:
 
     usr_intention = str(input("Whats your command? >> "))
 
-    clauses = split_usr_command(usr_intention)
-    detected = []
+    try:
+        clauses = split_usr_command(usr_intention)
+        detected = []
+        found_intent = False
 
-    for clause in clauses:
-        doc = nlp(clause)
-        clause = str(clause)
+        for clause in clauses:
+            doc = nlp(clause)
+            clause = str(clause)
 
-        for intent, score in doc.cats.items():
-            if score >= 0.5:
+            for intent, score in doc.cats.items():
+                if score >= 0.5:
 
-                if intent == "shuffle":
-                    if "on" in clause: 
-                        detected.append("shuffle_on")
-                    else:
-                        detected.append("shuffle_off")
+                    if intent == "shuffle":
+                        if "on" in clause: 
+                            detected.append("shuffle_on")
+                        else:
+                            detected.append("shuffle_off")
 
-                if intent == "repeat":
-                    if "on" in clause: 
-                        detected.append("repeat_on")
-                    else:
-                        detected.append("repeat_off")
+                    elif intent == "repeat":
+                        if "on" in clause: 
+                            detected.append("repeat_on")
+                        else:
+                            detected.append("repeat_off")
 
+                    elif intent != "none":
+                        print(f"Intent {intent} added!")
+                        detected.append(intent)
+
+                    found_intent = True
+
+            if not found_intent:
+                print("No intent for your command was found... ")
+                        
+
+        print("="*10)
+
+        for intention in detected:
+            action = intention_map.get(intention)
+
+            if action:
+                if intention == "play_music" or intention == "play_playlist":
+                    action(sp, usr_intention)
                 else:
-                    print(f"Intent {intent} added!")
-                detected.append(intent)
+                    print(intention)
+                    action(sp)
+                print(f"Executing command: {intention}")
+                print("=-="*8)
+                sleep(0.5)
+    except Exception as e:
+        print(f"Error: {e}")
 
-    print("="*10)
 
-    for intention in detected:
-        action = intention_map.get(intention)
 
-        if action:
-            action(sp)
-            print(f"Executing command: {intention}")
-            print("=-="*8)
-            sleep(0.5)
 
-        
 
