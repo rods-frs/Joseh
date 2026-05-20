@@ -43,17 +43,16 @@ def get_current_music(sp):
         print(f"Current music: {track["name"]}")
     else: print("There`s no music playing")
 
-def shuffle_on(sp):
-    sp.shuffle(state=True)
-
-def shuffle_off(sp):
-    sp.shuffle(state=False)
+def shuffle(sp, shuffle_bool):
+    if shuffle_bool: #0 to turn off, 1 to turn on
+        sp.shuffle(state=True)
+    else: sp.shuffle(state=False)
     
-def repeat_on(sp):
-    sp.repeat(state="track")
-
-def repeat_off(sp):
-    sp.repeat(state="off")
+def repeat(sp, repeat_bool):
+    if repeat_bool:
+        sp.repeat(state="track")
+    else:
+        sp.repeat(state="off")
 
 def play_music(sp, uri):
     sp.start_playback(uris=[uri])
@@ -61,7 +60,10 @@ def play_music(sp, uri):
 def play_playlist(sp, uri):
     sp.start_playback(context_uri=uri)
 
-#base commands
+#complex commands
+
+#modelo detectar o nome da musica -> NOME DA MUSICA
+#NOME DA MUSICA -> PESQUISAR MUSICA 
 
 def music_search(sp, music_name):
     results = sp.search(q=music_name, type="track", limit=5)
@@ -89,53 +91,18 @@ def playlist_search(sp, playlist_name):
             }
     return search_results
 
-#composite commands
+def direct_play_playlist(sp, playlist_name):
+    playlist_search_results = playlist_search(sp, playlist_name)
+    for key, value in playlist_search_results.items():
+        if key == "playlist_1":
+            to_play_playlist_uri = value["uri"]
+            to_play_playlist_name = value["playlist"]
+            print(to_play_playlist_name)
 
-def direct_playlist_play(sp, usr_input):
-
-    playlist_name = get_playlist_name(usr_input)
-    if playlist_name is not None:
-        playlist_search_results = playlist_search(sp, playlist_name)
-
-        for key, value in playlist_search_results.items():
-            if key == "playlist_1":
-                to_play_playlist_uri = value["uri"]
-                to_play_playlist_name = value["playlist"]
-
-        print(f"Playing {to_play_playlist_name}")
+    #confirming if the user wants to play the playlist coming from the search
+    playlist_confirmation = int(input(f"PLayling playlist: {to_play_playlist_name}. Type 1 if OK, anything else if NO: "))
+    if playlist_confirmation == 1:
         play_playlist(sp, to_play_playlist_uri)
-    else: print("Playlist name not found...")
-
-def direct_music_play(sp, usr_input):
-
-    music_name = get_music_name(usr_input)
-    search_results = music_search(sp, music_name)
-
-    for key, value in search_results.items():
-        if key == "track_1":
-            m_play = value["uri"]
-            m_name = value["track"]
-
-    print(f"Playing {m_name}")
-    play_music(sp, m_play)
-
-def get_music_name(usr_input):
-    ner_nlp = spacy.load("NER_MODEL")
-    doc = ner_nlp(usr_input)
-    for ent in doc.ents:
-        if ent.label_ == "MUSIC_NAME":
-            print(ent.text)
-            music_name = ent.text
-            return music_name
-
-def get_playlist_name(usr_input):
-    ner_nlp = spacy.load("NER_MODEL_2")
-    doc = ner_nlp(usr_input)
-    for ent in doc.ents:
-        if ent.label_ == "playlist_name":
-            print(ent.text)
-            playlist_name = ent.text
-            return playlist_name
 
 def split_usr_command(text):
     parts = re.split(r'\b(and then|and|also|then)\b|(\s*,\s*)', text, flags=re.IGNORECASE)
@@ -155,77 +122,37 @@ intention_map = {
     "resume_music":    resume_music,
     "next_track":      next_track,
     "pause_music":     pause_music,
-    "shuffle_off":     shuffle_off, 
-    "repeat_on":        repeat_on, 
-    "repeat_off":       repeat_off,
+    "shuffle":         shuffle, #requires training to check if the user wants to turn on or off
+    "repeat":          repeat, #requires training to check if the user wants to turn on or off
     "get_current_music": get_current_music,
-    "shuffle_on":       shuffle_on,
-    "play_music":       direct_music_play,
-    "play_playlist":    direct_playlist_play,
-    "search_music":     music_search,   #not done
-    "search_playlist":  playlist_search  #not done
 }
 
-
-nlp = spacy.load("spotify-v2")
-
+nlp = spacy.load("spotify-model-v1")
 
 while True:
 
     usr_intention = str(input("Whats your command? >> "))
 
-    try:
-        clauses = split_usr_command(usr_intention)
-        detected = []
-        found_intent = False
+    clauses = split_usr_command(usr_intention)
+    detected = []
 
-        for clause in clauses:
-            doc = nlp(clause)
-            clause = str(clause)
+    for clause in clauses:
+        doc = nlp(clause)
 
-            for intent, score in doc.cats.items():
-                if score >= 0.5:
+        for intent, score in doc.cats.items():
+            if score >= 0.5:
+                print(f"Intent {intent} added!")
+                detected.append(intent)
 
-                    if intent == "shuffle":
-                        if "on" in clause: 
-                            detected.append("shuffle_on")
-                        else:
-                            detected.append("shuffle_off")
+    print("="*10)
 
-                    elif intent == "repeat":
-                        if "on" in clause: 
-                            detected.append("repeat_on")
-                        else:
-                            detected.append("repeat_off")
+    for intention in detected:
+        action = intention_map.get(intention)
 
-                    elif intent != "none":
-                        print(f"Intent {intent} added!")
-                        detected.append(intent)
+        if action:
+            action(sp)
+            print(f"Executing command: {intention}")
+            sleep(0.5)
 
-                    found_intent = True
-
-            if not found_intent:
-                print("No intent for your command was found... ")
-                        
-
-        print("="*10)
-
-        for intention in detected:
-            action = intention_map.get(intention)
-
-            if action:
-                if intention == "play_music" or intention == "play_playlist":
-                    action(sp, usr_intention)
-                else:
-                    print(intention)
-                    action(sp)
-                print(f"Executing command: {intention}")
-                print("=-="*8)
-                sleep(0.5)
-    except Exception as e:
-        print(f"Error: {e}")
-
-
-
-
+        
 

@@ -30,6 +30,8 @@ def update_system():
     if OS == "fedora":
         logging.info("Updating system... ")
         sy("sudo -S dnf -y update > /dev/null")
+    else: 
+        logging.info("The only OS supported for this command is RedHat based systems.")
 
 def get_date():
     date = sy("date")
