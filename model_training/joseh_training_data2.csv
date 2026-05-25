@@ -1,0 +1,201 @@
+phrase,intent
+resume the music,resume
+resume playback,resume
+continue the music,resume
+continue playing,resume
+play the music again,resume
+unpause the music,resume
+unpause playback,resume
+keep playing,resume
+start playing again,resume
+resume my music,resume
+play again,resume
+continue my playlist,resume
+resume the song,resume
+get the music going again,resume
+let the music play,resume
+resume audio,resume
+bring the music back,resume
+resume track,resume
+continue the track,resume
+go on playing,resume
+keep the music going,resume
+resume where it stopped,resume
+play from where it was,resume
+unpause the song,resume
+resume the playlist,resume
+pause the music,pause
+pause playback,pause
+stop the music for a moment,pause
+pause my music,pause
+hold the music,pause
+pause the song,pause
+pause the track,pause
+stop the song,pause
+pause audio,pause
+wait stop the music,pause
+hold on pause this,pause
+pause my playlist,pause
+freeze the music,pause
+pause it,pause
+stop playing for now,pause
+halt the music,pause
+pause this track,pause
+put the music on hold,pause
+pause the current song,pause
+can you pause,pause
+suspend the music,pause
+stop the playback,pause
+pause for a second,pause
+hold the playback,pause
+pause everything,pause
+skip this song,skip
+skip the track,skip
+skip this one,skip
+skip to the next song,skip
+jump to the next track,skip
+I don't like this song skip it,skip
+skip this track please,skip
+move to the next song,skip
+can you skip,skip
+skip forward,skip
+hop to the next song,skip
+go past this track,skip
+skip the current song,skip
+skip over this one,skip
+this song is bad skip it,skip
+pass this track,skip
+skip my current song,skip
+jump forward a track,skip
+skip to next,skip
+I want to skip this,skip
+skip it,skip
+advance to the next track,skip
+go to next song,skip
+skip please,skip
+bypass this song,skip
+next song,next
+play the next song,next
+go to the next track,next
+next track,next
+what's next,next
+I want the next song,next
+change to next,next
+go next,next
+next one,next
+play next,next
+move to next track,next
+I want to hear the next one,next
+switch to next song,next
+forward to next,next
+next please,next
+go forward,next
+play next track,next
+put on the next song,next
+advance the track,next
+go to next,next
+play what's next,next
+I want to hear something else next,next
+jump to the next one,next
+what comes next,next
+move forward a track,next
+go back to the last song,back
+go back,back
+play the previous track,back
+back to last song,back
+go to the previous track,back
+back one song,back
+rewind to the previous song,back
+I want to hear the last song again,back
+go backwards,back
+step back a track,back
+back please,back
+play the song before,back
+go back a track,back
+back to the previous one,back
+return to the last track,back
+go back one,back
+I missed the last song go back,back
+return to previous,back
+move back a song,back
+previous please go back,back
+undo the skip,back
+step back one song,back
+play what was before,back
+go to last track,back
+back a song,back
+previous song,previous
+play the previous song,previous
+previous track,previous
+go to previous,previous
+I want the previous song,previous
+switch to previous,previous
+play what was before this,previous
+previous one please,previous
+go back to previous,previous
+last track,previous
+play the last one,previous
+take me to the previous song,previous
+previous please,previous
+the song before this,previous
+I want to hear the previous track,previous
+switch back,previous
+go to the track before,previous
+play the prior song,previous
+I liked the previous one play it,previous
+go to prior track,previous
+previous song please,previous
+return to previous song,previous
+play previous,previous
+back to previous track,previous
+the one before this,previous
+update the system,update
+run a system update,update
+update everything,update
+check for updates,update
+install updates,update
+run updates,update
+do a system update,update
+update my system,update
+upgrade the system,update
+check for system updates,update
+install system updates,update
+run an upgrade,update
+update software,update
+upgrade packages,update
+update my packages,update
+do an upgrade,update
+system update please,update
+run package updates,update
+refresh the system,update
+apply updates,update
+upgrade my system,update
+update all packages,update
+check and install updates,update
+update now,update
+run system upgrade,update
+what's the date today,date
+tell me the date,date
+what day is it,date
+what is today's date,date
+current date,date
+today's date,date
+what's today,date
+give me the date,date
+do you know the date,date
+what date is it,date
+tell me today's date,date
+can you tell me the date,date
+what is the current date,date
+I need the date,date
+date please,date
+what day of the week is it,date
+tell me what day it is,date
+is it Monday,date
+what month is it,date
+give me today's date,date
+date and day please,date
+what's today's date,date
+can you check the date,date
+tell me the current date,date
+what is today,date

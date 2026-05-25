@@ -17,6 +17,7 @@
     "mode":"default"
   },
   "labels":{
+<<<<<<<< Updated upstream:NER_MODEL_4/meta.json
     "ner":[
       "MUSIC_NAME",
       "playlist_name"
@@ -27,6 +28,24 @@
   ],
   "components":[
     "ner"
+========
+    "textcat_multilabel":[
+      "resume",
+      "pause",
+      "skip",
+      "next",
+      "back",
+      "previous",
+      "update",
+      "date"
+    ]
+  },
+  "pipeline":[
+    "textcat_multilabel"
+  ],
+  "components":[
+    "textcat_multilabel"
+>>>>>>>> Stashed changes:model_training/joseh_model_v1/meta.json
   ],
   "disabled":[
 

@@ -1,8 +1,0 @@
-{
-  "labels":[
-    "request_date",
-    "n_request_date"
-  ],
-  "threshold":0.0,
-  "positive_label":null
-}
