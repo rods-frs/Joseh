@@ -1,0 +1,13 @@
+{
+  "labels":[
+    "resume",
+    "pause",
+    "skip",
+    "next",
+    "back",
+    "previous",
+    "update",
+    "date"
+  ],
+  "threshold":0.5
+}

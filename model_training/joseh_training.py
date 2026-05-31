@@ -5,6 +5,7 @@ import random
 from spacy.training import Example
 from os import system
 from time import sleep
+from collections import deque
 
 #//
 
@@ -40,7 +41,7 @@ for label in labels:
 #//
 
 cat_training_data = []
-TRAINING_CSV = "joseh_training_data2.csv"
+TRAINING_CSV = "model_training/joseh_training_data2.csv"
 
 def open_csv(path):
     with open(path, newline="") as f:
@@ -70,6 +71,9 @@ patience = 10
 last_loss = float("inf")
 current_loss = float("inf")
 first_epoch = True
+loss_window = deque(maxlen=10)
+DELTA = 0.01
+
 
 for _ in range(interactions):
     if patience <= 0:
@@ -81,7 +85,7 @@ for _ in range(interactions):
             break
 
     random.shuffle(cat_training_data)
-    last_loss = current_loss
+    last_smooth_loss = smooth_loss
     losses = {}
 
     for text, annotations in cat_training_data:
@@ -92,11 +96,14 @@ for _ in range(interactions):
     current_loss = losses["textcat_multilabel"]
     system("clear 2>/dev/null")
 
+    loss_window.append(current_loss)
+    smooth_loss = sum(loss_window) / len(loss_window)
+
     if first_epoch:
         logging.info(f"Loss: {current_loss:.4f} | Last: N/A | Patience: {patience}")
         first_epoch = False
 
-    elif last_loss - current_loss < 0.001:
+    elif last_smooth_loss - smooth_loss < DELTA:
         patience -= 1
         logging.info(f"Loss: {current_loss:.4f} | Last: {last_loss:.4f} | Patience: {patience}")
         logging.info("Not enough difference between errors, -1 patience point")

@@ -3,19 +3,27 @@ import spacy
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from os import system as sy
-<<<<<<< Updated upstream
-import logging
-=======
 import os
 import logging
 from time import sleep
 import re
 import subprocess
->>>>>>> Stashed changes
+import speech_recognition as sr
+import pyttsx3
+from datetime import date
+
+#speech recognition configuration
+r = sr.Recognizer()
+r.pause_threshold = 3
+
+#text to speech configuration
+engine = pyttsx3.init()
+engine.setProperty('rate', 150)  # default is 200
+
 
 #logging configuration
 logging.basicConfig(
-    level=logging.DEBUG,
+    level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 
@@ -29,7 +37,6 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 
 #nlp models loading
 BASE_NLP = spacy.load('en_core_web_lg')
-<<<<<<< Updated upstream
 
 #global variables
 OS = "fedora"
@@ -45,13 +52,15 @@ def update_system():
 def get_date():
     date = sy("date")
     print(f"Today`s date is: {date}")
-=======
-joseh_model = spacy.load('/home/rodrigo/PycharmProjects/Joseh/model_training/joseh_model_v1')
+
+joseh_model = spacy.load(r'/home/rodrigofernando/Documents/GitHub/Joseh/joseh_model_v1')
 
 #global variables
 password = os.environ.get("JOSEH_SUDO_PASS")
 print(password)
-OS = "ubuntu"
+OS = "fedora"
+SPEECH_ACTIVE = True
+
 
 #system commands
 def update_system():
@@ -68,10 +77,12 @@ def update_system():
     else:
         logging.info("OS not supported for this command.")
 
-
 def get_date():
-    sy("date")
->>>>>>> Stashed changes
+    today_str = date.today().strftime("%A, %d de %B de %Y")
+    engine.say(f"Today is {today_str}")
+    print(today_str)
+    engine.runAndWait
+
 
 #spotify commands
 def resume_music():
@@ -130,8 +141,6 @@ def check_simple_command(text):
     else:
         return False, "null"
 
-<<<<<<< Updated upstream
-=======
 def split_usr_command(text):
     parts = re.split(r'\b(and then|and|also|then)\b|(\s*,\s*)', text, flags=re.IGNORECASE)
     clean_parts = []
@@ -143,20 +152,48 @@ def split_usr_command(text):
             clean_parts.append(p)
     return clean_parts
 
->>>>>>> Stashed changes
 def execute_spotify_commands(commands_list):
     for command in commands_list:
         action = commands_map.get(command)
         action()
 
 #main loop
+engine.say("Hello, my name is Joseh, welcome!")
 while True:
-<<<<<<< Updated upstream
-=======
+    
+    engine.runAndWait()
+    correct_speech = False
     sleep(1)
->>>>>>> Stashed changes
-    usr_input = str(input(">>> "))
+    if not SPEECH_ACTIVE:
+        usr_input = str(input(">>> "))
+    else:
+        while not correct_speech:
+
+            #speech recognition
+
+            engine.say("Press ENTER to talk to me")
+            engine.runAndWait()
+            input("Press ENTER to start recognition")
+            try:
+                with sr.Microphone() as source:
+                    engine.say("Im lissening")
+                    print("Ouvindo...")
+                    r.adjust_for_ambient_noise(source, duration=1)
+                    audio = r.listen(source, phrase_time_limit=10)
+                usr_input = r.recognize_google(audio, language="en_US")
+                print(usr_input)  # string pronta
+                #usr_input2 = input("Command is correct? Y/N >> ")
+                usr_input2 = "Y"
+                if usr_input2 == "Y":
+                    break
+            except Exception as e:
+                engine.say(f"Sorry, I didn`t understand what you said")
+                engine.runAndWait()
+                logging.error(f"Error while understanding the speech: {e}")
+
     if usr_input == "exit":
+        engine.say("Goodbye")
+        engine.runAndWait()
         logging.info("== USER EXIT ==")
         break
     simple_command, command_list = check_simple_command(usr_input)
@@ -164,9 +201,6 @@ while True:
         logging.debug("Simple command detected!")
         execute_spotify_commands(command_list)
     else:
-<<<<<<< Updated upstream
-        logging.info("complex command detected! ignoring...")
-=======
         logging.debug("Complex command detected! Passing input to Joseh Model...")
         clauses = split_usr_command(usr_input)
         detected = []
@@ -175,15 +209,25 @@ while True:
             for intent, score in doc.cats.items():
                 if score >= 0.5:
                     print(f"Intent {intent} added!")
+                    engine.say(f"Intent recognized: {intent}")
+                    engine.runAndWait()
                     detected.append(intent)
         if len(detected) < 0:
             logging.debug("No intents detected!")
         else:
             print("=" * 10)
+            engine.say("Executing commands")
+            engine.runAndWait
+            for intention in detected:
+                engine.say(intention)
+                engine.runAndWait
             for intention in detected:
                 action = commands_map.get(intention)
                 if action:
-                    action()
+                    engine.say(f"Executing command: {intention}")
+                    engine.runAndWait()
                     print(f"Executing command: {intention}")
-                    sleep(0.5)
->>>>>>> Stashed changes
+                    sleep(2)
+                    action()
+                    
+
