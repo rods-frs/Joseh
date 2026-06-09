@@ -73,7 +73,8 @@ current_loss = float("inf")
 first_epoch = True
 loss_window = deque(maxlen=10)
 DELTA = 0.01
-
+smooth_loss = 0
+BATCH_SIZE = 15
 
 for _ in range(interactions):
     if patience <= 0:
@@ -88,10 +89,14 @@ for _ in range(interactions):
     last_smooth_loss = smooth_loss
     losses = {}
 
-    for text, annotations in cat_training_data:
-        doc = blank_nlp.make_doc(text)
-        example = Example.from_dict(doc, annotations)
-        blank_nlp.update([example], sgd=optimizer, losses=losses, drop=0.2)
+    for batch in spacy.util.minibatch(cat_training_data, size=BATCH_SIZE):
+        examples = []
+        for t, a in batch:
+            doc = blank_nlp.make_doc(t)
+            example = Example.from_dict(doc, a)
+            examples.append(example)
+        blank_nlp.update(examples, sgd=optimizer, losses=losses, drop=0.2)
+
 
     current_loss = losses["textcat_multilabel"]
     system("clear 2>/dev/null")
