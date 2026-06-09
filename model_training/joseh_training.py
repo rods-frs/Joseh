@@ -6,6 +6,7 @@ from spacy.training import Example
 from os import system
 from time import sleep
 from collections import deque
+from thinc.api import compounding
 
 #//
 
@@ -74,7 +75,14 @@ first_epoch = True
 loss_window = deque(maxlen=10)
 DELTA = 0.01
 smooth_loss = 0
-BATCH_SIZE = 15
+
+#batch configuration
+#batch_size = 15
+COMPOUND_SIZE = 1.01
+BATCH_START_SIZE = 5
+BATCH_END_SIZE = 25
+
+batch_size = compounding(start=BATCH_START_SIZE, stop=BATCH_END_SIZE, compound=COMPOUND_SIZE)
 
 for _ in range(interactions):
     if patience <= 0:
@@ -89,7 +97,7 @@ for _ in range(interactions):
     last_smooth_loss = smooth_loss
     losses = {}
 
-    for batch in spacy.util.minibatch(cat_training_data, size=BATCH_SIZE):
+    for batch in spacy.util.minibatch(cat_training_data, size=batch_size):
         examples = []
         for t, a in batch:
             doc = blank_nlp.make_doc(t)
