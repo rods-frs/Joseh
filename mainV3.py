@@ -11,6 +11,8 @@ import subprocess
 import speech_recognition as sr
 import pyttsx3
 from datetime import date
+import platform
+import distro
 
 #speech recognition configuration
 r = sr.Recognizer()
@@ -19,6 +21,7 @@ r.pause_threshold = 3
 #text to speech configuration
 engine = pyttsx3.init()
 engine.setProperty('rate', 150)  # default is 200
+engine.setProperty('voice', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\Voices\\Tokens\\TTS_MS_EN-US_ZIRA_11.0')
 
 
 #logging configuration
@@ -39,32 +42,19 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 BASE_NLP = spacy.load('en_core_web_lg')
 
 #global variables
-OS = "fedora"
+
+plataform = platform.system()
+if plataform == "Linux":
+    OS = distro.name()
+else:
+    OS = "windows"
+
+joseh_model = spacy.load(r'joseh_model_v1')
+SPEECH_ACTIVE = False
+password = ""
 
 #system commands
 def update_system():
-    if OS == "fedora":
-        logging.info("Updating system... ")
-        sy("sudo -S dnf -y update > /dev/null")
-    else: 
-        logging.info("The only OS supported for this command is RedHat based systems.")
-
-def get_date():
-    date = sy("date")
-    print(f"Today`s date is: {date}")
-
-joseh_model = spacy.load(r'/home/rodrigofernando/Documents/GitHub/Joseh/joseh_model_v1')
-
-#global variables
-password = os.environ.get("JOSEH_SUDO_PASS")
-print(password)
-OS = "fedora"
-SPEECH_ACTIVE = True
-
-
-#system commands
-def update_system():
-    print(repr(password))
     if OS == "fedora":
         logging.info("Updating system...")
         subprocess.run(["sudo", "-S", "dnf", "-y", "update"], input=f"{password}\n", text=True)
@@ -81,44 +71,76 @@ def get_date():
     today_str = date.today().strftime("%A, %d de %B de %Y")
     engine.say(f"Today is {today_str}")
     print(today_str)
-    engine.runAndWait
+    engine.runAndWait()
 
+def talk(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def talk_and_print(text):
+    engine.say(text)
+    engine.runAndWait
+    print(text)
 
 #spotify commands
+
+def get_music():
+    current = sp.current_playback()
+    if current is not None:
+        current_track = current["item"]["name"]
+        talk_and_print(f"The current music is: {current_track}")
+    else:
+        talk_and_print("There's nothing playing right now")
+        logging.error("Error to check current music: No playback")
+
 def resume_music():
     current = sp.current_playback()
     if current is not None and not current["is_playing"]:
+        talk("Resuming music")
+        logging.info("Resuming music")
         sp.start_playback()
     else:
-        print("There`s already a playback running")
+        print("Failed to resume music: No playback or track already playing")
 
 def next_track():
     current = sp.current_playback()
     if current is not None:
+        talk("Skipping this song")
+        logging.info("Skipping song")
         sp.next_track()
     else:
-        print("There`s no playback running")
+        talk("There's no music playing to skip")
+        logging.error("Failed to skip song: No playback")
 
 def pause_music():
     current = sp.current_playback()
-    if current["is_playing"]:
+    if current is not None and current["is_playing"]:
+        talk("Pausing music...")
+        logging.info("Pausing music")
         sp.pause_playback()
     else:
-        print("There`s no active playback to be paused")
+        talk("There's no music playing to pause")
+        logging.error("Failed to execute pause command: No playback")
 
 def previous_track():
-    sp.previous_track()
+    current = sp.current_playback()
+    if current is not None:
+        talk("Playing the previous song")
+        logging.info("Going back to the previous track")
+        sp.previous_track()
+    else:
+        talk("There's no playback")
+        logging.error("Failed to execute previous music command: No playback")
 
 #command mapping
 commands_map = {
     "resume": resume_music,
     "pause": pause_music,
-    "skip": next_track,
     "next": next_track,
-    "back": previous_track,
     "previous": previous_track,
     "update": update_system,
-    "date": get_date
+    "date": get_date,
+    "get_music": get_music
 }
 
 #modules
@@ -158,26 +180,24 @@ def execute_spotify_commands(commands_list):
         action()
 
 #main loop
-engine.say("Hello, my name is Joseh, welcome!")
+talk_and_print("Hello, my name is Joseh, welcome!")
 while True:
     
-    engine.runAndWait()
     correct_speech = False
     sleep(1)
     if not SPEECH_ACTIVE:
+        print("="*10)
+        talk_and_print("Whats your command?")
         usr_input = str(input(">>> "))
     else:
         while not correct_speech:
 
             #speech recognition
-
-            engine.say("Press ENTER to talk to me")
-            engine.runAndWait()
+            talk("Press ENTER to talk to me")
             input("Press ENTER to start recognition")
             try:
                 with sr.Microphone() as source:
-                    engine.say("Im lissening")
-                    print("Ouvindo...")
+                    talk_and_print("Im lissening")
                     r.adjust_for_ambient_noise(source, duration=1)
                     audio = r.listen(source, phrase_time_limit=10)
                 usr_input = r.recognize_google(audio, language="en_US")
@@ -187,13 +207,11 @@ while True:
                 if usr_input2 == "Y":
                     break
             except Exception as e:
-                engine.say(f"Sorry, I didn`t understand what you said")
-                engine.runAndWait()
+                talk_and_print(f"Sorry, I didn`t understand what you said")
                 logging.error(f"Error while understanding the speech: {e}")
 
     if usr_input == "exit":
-        engine.say("Goodbye")
-        engine.runAndWait()
+        talk_and_print("Goodbye")
         logging.info("== USER EXIT ==")
         break
     simple_command, command_list = check_simple_command(usr_input)
@@ -209,24 +227,17 @@ while True:
             for intent, score in doc.cats.items():
                 if score >= 0.5:
                     print(f"Intent {intent} added!")
-                    engine.say(f"Intent recognized: {intent}")
-                    engine.runAndWait()
+                    talk_and_print(f"Intent recognized: {intent}")
                     detected.append(intent)
         if len(detected) < 0:
-            logging.debug("No intents detected!")
+            talk_and_print("I didnt recognized any intention")
+            logging.error("No intents detected!")
         else:
             print("=" * 10)
-            engine.say("Executing commands")
-            engine.runAndWait
-            for intention in detected:
-                engine.say(intention)
-                engine.runAndWait
             for intention in detected:
                 action = commands_map.get(intention)
                 if action:
-                    engine.say(f"Executing command: {intention}")
-                    engine.runAndWait()
-                    print(f"Executing command: {intention}")
+                    talk_and_print(f"Executing command: {intention}")
                     sleep(2)
                     action()
                     

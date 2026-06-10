@@ -20,12 +20,11 @@
     "textcat_multilabel":[
       "resume",
       "pause",
-      "skip",
       "next",
-      "back",
       "previous",
       "update",
-      "date"
+      "date",
+      "get_music"
     ]
   },
   "pipeline":[

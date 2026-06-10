@@ -24,12 +24,11 @@ logging.basicConfig(
 labels = [
     "resume",
     "pause",
-    "skip",
     "next",
-    "back",
     "previous",
     "update",
-    "date"
+    "date",
+    "get_music"
 ]
 
 #//
@@ -41,8 +40,9 @@ for label in labels:
 
 #//
 
+
 cat_training_data = []
-TRAINING_CSV = "model_training/joseh_training_data2.csv"
+TRAINING_CSV = r"model_training\joseh_training_data3(1).csv"
 
 def open_csv(path):
     with open(path, newline="") as f:

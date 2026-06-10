@@ -2,12 +2,11 @@
   "labels":[
     "resume",
     "pause",
-    "skip",
     "next",
-    "back",
     "previous",
     "update",
-    "date"
+    "date",
+    "get_music"
   ],
   "threshold":0.5
 }
