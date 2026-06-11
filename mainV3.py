@@ -14,19 +14,9 @@ from datetime import date
 import platform
 import distro
 
-#speech recognition configuration
-r = sr.Recognizer()
-r.pause_threshold = 3
-
-#text to speech configuration
-engine = pyttsx3.init()
-engine.setProperty('rate', 150)  # default is 200
-engine.setProperty('voice', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\Voices\\Tokens\\TTS_MS_EN-US_ZIRA_11.0')
-
-
 #logging configuration
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 
@@ -39,27 +29,54 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 ))
 
 #nlp models loading
-BASE_NLP = spacy.load('en_core_web_lg')
+try:
+    logging.debug("Loading NLP models")
+    BASE_NLP = spacy.load('en_core_web_lg')
+    joseh_model = spacy.load(r'joseh_model_v1')
+except Exception as e:
+    logging.error(f"Error while loading NLP models: {e}")
 
-#global variables
+#OS recognition
+try:
+    logging.debug("Recognizing OS")
+    plataform = platform.system()
+    if plataform == "Linux":
+        OS = distro.name()
+    else:
+        OS = "windows"
+    logging.debug(f"Recognized OS: {OS}")
+except Exception as e:
+    logging.error(f"Error while recognizing the OS: {e}")
 
-plataform = platform.system()
-if plataform == "Linux":
-    OS = distro.name()
-else:
-    OS = "windows"
+#speech recognition configuration
+try:
+    logging.debug("Configuring speech recognition")
+    r = sr.Recognizer()
+    r.pause_threshold = 3
+except Exception as e:
+    logging.error(f"Failed to configure speech recognition: {e}")
 
-joseh_model = spacy.load(r'joseh_model_v1')
-SPEECH_ACTIVE = False
-password = ""
+#text to speech configuration
+try:
+    logging.debug("Configuring t2s")
+    engine = pyttsx3.init()
+    engine.setProperty('rate', 150)  # default is 200
+    if "windows" in OS:
+        engine.setProperty('voice', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\Voices\\Tokens\\TTS_MS_EN-US_ZIRA_11.0')
+except Exception as e:
+    logging.error(f"Failed to configure t2s: {e}")
+
+#Global variables
+SPEECH_ACTIVE = True
+password = "Herocraft" 
 
 #system commands
 def update_system():
-    if OS == "fedora":
+    if "Fedora" in OS:
         logging.info("Updating system...")
         subprocess.run(["sudo", "-S", "dnf", "-y", "update"], input=f"{password}\n", text=True)
         logging.info("System updated!")
-    elif OS == "ubuntu":
+    elif "ubuntu" in OS:
         logging.info("Updating system...")
         subprocess.run(["sudo", "-S", "apt", "update"], input=f"{password}\n", text=True)
         subprocess.run(["sudo", "-S", "apt", "-y", "upgrade"], input=f"{password}\n", text=True)
@@ -73,17 +90,17 @@ def get_date():
     print(today_str)
     engine.runAndWait()
 
+#t2s functions
 def talk(text):
     engine.say(text)
     engine.runAndWait()
 
 def talk_and_print(text):
     engine.say(text)
-    engine.runAndWait
+    engine.runAndWait()
     print(text)
 
 #spotify commands
-
 def get_music():
     current = sp.current_playback()
     if current is not None:
