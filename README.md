@@ -120,7 +120,6 @@ joseh/
 
 ## Known Limitations (Alpha)
 
-- `joseh_model_v1` is not yet distributed with the repo — you need to train or obtain it separately
 - Speech recognition depends on Google's API (`recognize_google`), requiring an internet connection
 - System update commands only support Fedora and Ubuntu
 - No wake word detection — each interaction requires a manual Enter press
