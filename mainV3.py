@@ -181,6 +181,7 @@ def check_simple_command(text):
         return False, "null"
 
 def split_usr_command(text):
+    logging.debug("Splitting user command...")
     parts = re.split(r'\b(and then|and|also|then)\b|(\s*,\s*)', text, flags=re.IGNORECASE)
     clean_parts = []
     for p in parts:
@@ -199,7 +200,6 @@ def execute_spotify_commands(commands_list):
 #main loop
 talk_and_print("Hello, my name is Joseh, welcome!")
 while True:
-    
     correct_speech = False
     sleep(1)
     if not SPEECH_ACTIVE:
@@ -208,7 +208,6 @@ while True:
         usr_input = str(input(">>> "))
     else:
         while not correct_speech:
-
             #speech recognition
             talk("Press ENTER to talk to me")
             input("Press ENTER to start recognition")
