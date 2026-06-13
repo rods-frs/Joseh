@@ -4,12 +4,17 @@ import speech_recognition as sr
 from time import sleep
 
 #initial setup
-logging, sp, base_model, joseh_model, OS, r, engine = jt.setup()
+logging, sp, base_model, cat_model, ner_model, OS, r, engine = jt.setup()
 
 #parameters
-COMMAND_VIA_SPEECH = True
+COMMAND_VIA_SPEECH = False
 SYSTEM_PASSWORD = "herocraft"
 SPEECH_WAIT_TIME = 10
+
+#variables pre-loading
+program_name = ""
+music_name = ""
+
 commands_map = {
     "resume": lambda:jt.resume_music(engine, sp),
     "pause": lambda:jt.pause_music(engine, sp),
@@ -17,7 +22,9 @@ commands_map = {
     "previous": lambda:jt.previous_track(engine, sp),
     "update": lambda:jt.update_system(OS, SYSTEM_PASSWORD, engine),
     "date": lambda:jt.get_date(engine),
-    "get_music": lambda:jt.get_music(engine, sp)
+    "get_music": lambda:jt.get_music(engine, sp),
+    "open_program": lambda:jt.open_program(program_name),
+    "play_music": lambda:jt.play_music(jt.get_music_id(music_name, sp), sp, engine)
 }
 
 if __name__ == "__main__":
@@ -63,10 +70,18 @@ if __name__ == "__main__":
 
             else:
                 logging.debug("Complex command detected! Passing input to Joseh NLP model...")
-                intents = jt.intent_recognition(usr_input, joseh_model, engine)
+                intents = jt.intent_recognition(usr_input, cat_model)
                 for intention in intents:
                     action = commands_map.get(intention)
                     if action:
+                        if intention == "open_program":
+                            logging.debug("Program intent recognized")
+                            program_name = jt.get_program_name(usr_input, ner_model)
+                            logging.debug(f"Program name recognized: {program_name}")
+                        elif intention == "play_music":
+                            logging.debug("play music intent recognized")
+                            music_name = jt.get_music_name(usr_input, ner_model)
+                            logging.debug(f"Music name recognized: {music_name}")
                         jt.talk_and_print(engine, f"Executing command: {intention}")
                         print("="*10)
                         sleep(1.5)

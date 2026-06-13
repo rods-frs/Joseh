@@ -28,7 +28,9 @@ labels = [
     "previous",
     "update",
     "date",
-    "get_music"
+    "get_music",
+    "open_program",
+    "play_music"
 ]
 
 #//
@@ -40,9 +42,12 @@ for label in labels:
 
 #//
 
+#parameters
+TRAINING_CSV = r"model_training/joseh_training_data3_updated.csv"
+MODEL_NAME = "joseh_cat_model_v2"
 
 cat_training_data = []
-TRAINING_CSV = r"model_training\joseh_training_data3(1).csv"
+
 
 def open_csv(path):
     with open(path, newline="") as f:
@@ -134,5 +139,5 @@ while True:
         logging.info(f"{label}: {score:.4f}")
 
 input("Press ENTER to save the model")
-blank_nlp.to_disk("joseh_model_v1")
+blank_nlp.to_disk(MODEL_NAME)
 

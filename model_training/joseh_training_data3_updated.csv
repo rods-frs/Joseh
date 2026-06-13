@@ -1,0 +1,420 @@
+phrase,intent
+resume the music,resume
+resume playback,resume
+continue the music,resume
+continue playing,resume
+play the music again,resume
+unpause the music,resume
+unpause playback,resume
+keep playing,resume
+start playing again,resume
+resume my music,resume
+play again,resume
+continue my playlist,resume
+resume the song,resume
+get the music going again,resume
+let the music play,resume
+resume audio,resume
+bring the music back,resume
+resume track,resume
+continue the track,resume
+go on playing,resume
+keep the music going,resume
+resume where it stopped,resume
+play from where it was,resume
+unpause the song,resume
+resume the playlist,resume
+get it going again,resume
+start the music back up,resume
+I want to keep listening,resume
+bring back the sound,resume
+let it play,resume
+start it up again,resume
+pick up where it left off,resume
+continue from where it was,resume
+get the song going,resume
+hit play again,resume
+take it off pause,resume
+go ahead and play,resume
+keep going with the music,resume
+don't stop let it go,resume
+I want to hear it again,resume
+pause the music,pause
+pause playback,pause
+stop the music for a moment,pause
+pause my music,pause
+hold the music,pause
+pause the song,pause
+pause the track,pause
+stop the song,pause
+pause audio,pause
+wait stop the music,pause
+hold on pause this,pause
+pause my playlist,pause
+freeze the music,pause
+pause it,pause
+stop playing for now,pause
+halt the music,pause
+pause this track,pause
+put the music on hold,pause
+pause the current song,pause
+can you pause,pause
+suspend the music,pause
+stop the playback,pause
+pause for a second,pause
+hold the playback,pause
+pause everything,pause
+cut the music for now,pause
+stop it for a sec,pause
+can you stop the music,pause
+hold on a second,pause
+give it a break,pause
+stop it right there,pause
+freeze the track,pause
+silence the music for now,pause
+take a pause please,pause
+hit pause,pause
+pause what's playing,pause
+stop playback now,pause
+pause right here,pause
+quiet the music for a moment,pause
+cut the audio,pause
+skip this song,next
+skip the track,next
+skip this one,next
+skip to the next song,next
+jump to the next track,next
+I don't like this song skip it,next
+skip this track please,next
+move to the next song,next
+can you skip,next
+skip forward,next
+hop to the next song,next
+go past this track,next
+skip the current song,next
+skip over this one,next
+this song is bad skip it,next
+pass this track,next
+skip my current song,next
+jump forward a track,next
+skip to next,next
+I want to skip this,next
+skip it,next
+advance to the next track,next
+go to next song,next
+skip please,next
+bypass this song,next
+next song,next
+play the next song,next
+go to the next track,next
+next track,next
+what's next,next
+I want the next song,next
+change to next,next
+go next,next
+next one,next
+play next,next
+move to next track,next
+I want to hear the next one,next
+switch to next song,next
+forward to next,next
+next please,next
+go forward,next
+play next track,next
+put on the next song,next
+advance the track,next
+go to next,next
+play what's next,next
+jump to the next one,next
+what comes next,next
+move forward a track,next
+not this one play something else,next
+I'm done with this one next,next
+change the song,next
+put on another song,next
+I don't want this track,next
+go ahead to the next,next
+move on to the next track,next
+this isn't it next please,next
+fast forward to the next,next
+keep moving next track,next
+I want something different,next
+go back to the last song,previous
+go back,previous
+play the previous track,previous
+back to last song,previous
+go to the previous track,previous
+back one song,previous
+rewind to the previous song,previous
+I want to hear the last song again,previous
+go backwards,previous
+step back a track,previous
+back please,previous
+play the song before,previous
+go back a track,previous
+back to the previous one,previous
+return to the last track,previous
+go back one,previous
+I missed the last song go back,previous
+return to previous,previous
+move back a song,previous
+previous please go back,previous
+undo the skip,previous
+step back one song,previous
+play what was before,previous
+go to last track,previous
+back a song,previous
+previous song,previous
+play the previous song,previous
+previous track,previous
+go to previous,previous
+I want the previous song,previous
+switch to previous,previous
+play what was before this,previous
+previous one please,previous
+go back to previous,previous
+last track,previous
+play the last one,previous
+take me to the previous song,previous
+previous please,previous
+the song before this,previous
+I want to hear the previous track,previous
+switch back,previous
+go to the track before,previous
+play the prior song,previous
+I liked the previous one play it,previous
+go to prior track,previous
+previous song please,previous
+return to previous song,previous
+play previous,previous
+back to previous track,previous
+the one before this,previous
+I want to go back,previous
+replay the last song,previous
+that last song was good go back,previous
+take me back one track,previous
+I want to hear that again,previous
+go one back,previous
+bring back the last song,previous
+what was playing before,previous
+go back in the playlist,previous
+I missed that one go back,previous
+jump back a song,previous
+move back to the previous,previous
+that was good rewind,previous
+update the system,update
+run a system update,update
+update everything,update
+check for updates,update
+install updates,update
+run updates,update
+do a system update,update
+update my system,update
+upgrade the system,update
+check for system updates,update
+install system updates,update
+run an upgrade,update
+update software,update
+upgrade packages,update
+update my packages,update
+do an upgrade,update
+system update please,update
+run package updates,update
+refresh the system,update
+apply updates,update
+upgrade my system,update
+update all packages,update
+check and install updates,update
+update now,update
+run system upgrade,update
+are there any updates available,update
+get the latest updates,update
+fetch updates,update
+sync the system,update
+pull in any new updates,update
+get everything up to date,update
+make sure the system is current,update
+patch the system,update
+update and upgrade,update
+run dnf update,update
+upgrade everything now,update
+is the system up to date,update
+bring the system up to date,update
+update installed packages,update
+what's the date today,date
+tell me the date,date
+what day is it,date
+what is today's date,date
+current date,date
+today's date,date
+what's today,date
+give me the date,date
+do you know the date,date
+what date is it,date
+tell me today's date,date
+can you tell me the date,date
+what is the current date,date
+I need the date,date
+date please,date
+what day of the week is it,date
+tell me what day it is,date
+is it Monday,date
+what month is it,date
+give me today's date,date
+date and day please,date
+what's today's date,date
+can you check the date,date
+tell me the current date,date
+what is today,date
+what's the day today,date
+tell me the day and date,date
+what's the full date,date
+is it the weekend,date
+what day are we on,date
+which day is today,date
+what number day is it,date
+do you know what day we're on,date
+tell me the weekday,date
+is today a weekday,date
+give me the current date,date
+tell me today,date
+what song is this,get_music
+what's playing right now,get_music
+what music is this,get_music
+what's the name of this song,get_music
+tell me the name of this track,get_music
+what song is playing,get_music
+what track is this,get_music
+can you tell me the song name,get_music
+what is this song called,get_music
+name this song,get_music
+what's the name of this music,get_music
+what am I listening to,get_music
+identify this song,get_music
+what track is playing,get_music
+tell me what song this is,get_music
+what's currently playing,get_music
+what's the song name,get_music
+who sings this,get_music
+what's the title of this song,get_music
+can you identify this track,get_music
+which song is on right now,get_music
+what song did you put on,get_music
+name this track,get_music
+tell me the current song,get_music
+what artist is playing,get_music
+what's the name of the current track,get_music
+who is this artist,get_music
+what song is this please,get_music
+I want to know the song name,get_music
+can you name this music,get_music
+which track is this,get_music
+what's on right now,get_music
+tell me what I'm listening to,get_music
+what's this called,get_music
+I want to know what song is playing,get_music
+do you know the name of this song,get_music
+what is the name of the current song,get_music
+tell me the track name,get_music
+can you identify what's playing,get_music
+what song did you pick,get_music
+open Spotify,open_program
+launch Discord,open_program
+open Firefox for me,open_program
+can you open Chrome,open_program
+start VS Code,open_program
+launch Steam please,open_program
+open VLC,open_program
+can you launch Telegram,open_program
+start Blender,open_program
+open the browser,open_program
+launch the terminal,open_program
+open Notion,open_program
+can you start Slack,open_program
+launch Zoom for me,open_program
+open GIMP,open_program
+start PyCharm,open_program
+can you open the file manager,open_program
+launch OBS Studio,open_program
+open Postman,open_program
+start Figma,open_program
+can you launch WhatsApp,open_program
+open the text editor,open_program
+launch Audacity,open_program
+open IntelliJ,open_program
+can you start the browser,open_program
+launch LibreOffice,open_program
+open the app for me,open_program
+start Wireshark,open_program
+can you open Brave,open_program
+launch the code editor,open_program
+open Thunderbird please,open_program
+start the terminal for me,open_program
+can you launch the file manager,open_program
+open DaVinci Resolve,open_program
+launch Inkscape,open_program
+can you open the IDE,open_program
+start the application,open_program
+open the program,open_program
+launch the app please,open_program
+can you start the application,open_program
+open FileZilla,open_program
+start VirtualBox,open_program
+launch the media player,open_program
+can you open the media player,open_program
+open the code editor,open_program
+start the IDE please,open_program
+launch the text editor for me,open_program
+can you start Figma,open_program
+open the video editor,open_program
+launch the video editor please,open_program
+play Bohemian Rhapsody,play_music
+put on Blinding Lights,play_music
+play some music,play_music
+can you play a song,play_music
+put on Hotel California,play_music
+play Lose Yourself,play_music
+can you play Billie Jean,play_music
+put on some music for me,play_music
+play Rolling in the Deep,play_music
+start playing music,play_music
+play a song please,play_music
+can you put on Shape of You,play_music
+play Heat Waves,play_music
+put on Levitating,play_music
+can you play some music,play_music
+play As It Was,play_music
+start some music,play_music
+put on a song for me,play_music
+can you play Sunflower,play_music
+play Bad Guy,play_music
+put on Circles,play_music
+play some tunes,play_music
+can you start playing a song,play_music
+play Rockstar please,play_music
+put on Watermelon Sugar,play_music
+play a track for me,play_music
+can you play Stay,play_music
+put on some tunes,play_music
+play Peaches,play_music
+start the music please,play_music
+can you put on a track,play_music
+play something for me,play_music
+put on Industry Baby,play_music
+play a song for me please,play_music
+can you play some tunes,play_music
+start playing Montero,play_music
+put on a playlist,play_music
+play the music please,play_music
+can you start the music,play_music
+play Old Town Road,play_music
+put on good 4 u,play_music
+play something relaxing,play_music
+can you play something for me,play_music
+put on some background music,play_music
+play a random song,play_music
+can you put on music,play_music
+start playing something,play_music
+play some background music,play_music
+put on a random song please,play_music
+can you play a random track,play_music

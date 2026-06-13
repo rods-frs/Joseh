@@ -11,9 +11,9 @@ import pyttsx3
 from datetime import date
 import platform
 import distro
+from os import system as sy
 
 #alsa error handler (made by AI)
-import os
 import ctypes
 
 ERROR_HANDLER_FUNC = ctypes.CFUNCTYPE(None, ctypes.c_char_p, ctypes.c_int,
@@ -30,12 +30,12 @@ asound.snd_lib_error_set_handler(c_error_handler)
 def setup():
     logging = logging_configuration()
     sp = spotipy_configuration()
-    base_model, joseh_model = load_models()
+    base_model, cat_model, ner_model = load_models()
     OS = os_recognition()
     r = speech_recognition_configuration()
     engine = tts_configuration()
 
-    return logging, sp, base_model, joseh_model, OS, r, engine
+    return logging, sp, base_model, cat_model, ner_model, OS, r, engine
 
 def logging_configuration():
     logging.basicConfig(
@@ -56,8 +56,9 @@ def spotipy_configuration():
 def load_models():
     logging.debug("Loading NLP models")
     base_nlp = spacy.load('en_core_web_lg')
-    joseh_model = spacy.load(r'joseh_model_v1')
-    return base_nlp, joseh_model
+    cat_model = spacy.load(r'joseh_cat_model_v2')
+    ner_model = spacy.load(r'joseh_ner_model_v2')
+    return base_nlp, cat_model, ner_model
 
 def os_recognition():
     logging.debug("Recognizing OS")
@@ -99,10 +100,14 @@ def update_system(OS, password, engine):
         logging.info("Updating system...")
         subprocess.run(["sudo", "-S", "dnf", "-y", "update"], input=f"{password}\n", text=True)
         logging.info("System updated!")
-    elif "ubuntu" in OS:
+    elif "Ubuntu" in OS:
         logging.info("Updating system...")
         subprocess.run(["sudo", "-S", "apt", "update"], input=f"{password}\n", text=True)
         subprocess.run(["sudo", "-S", "apt", "-y", "upgrade"], input=f"{password}\n", text=True)
+        logging.info("System updated!")
+    elif "Arch" in OS:
+        logging.info("Updating system...")
+        subprocess.run(["sudo", "pacman", "-Syu"], input=f"{password}\n", text=True)
         logging.info("System updated!")
     else:
         logging.info("OS not supported for this command.")
@@ -110,6 +115,12 @@ def update_system(OS, password, engine):
 def get_date(engine):
     today_str = date.today().strftime("%A, %d de %B de %Y")
     talk_and_print(engine, f"Today is {today_str}")
+
+def open_program(name):
+    logging.debug("open_program function called")
+    logging.info(f"Oppening application: {name}")
+    #talk_and_print(engine, f"Oppening program: {name}")
+    sy(name.lower())
 
 #spotify commands
 
@@ -162,6 +173,13 @@ def previous_track(engine, sp):
         talk_and_print(engine, "There's no playback")
         logging.error("Failed to execute previous music command: No playback")
 
+def play_music(uri, sp, engine):
+    sp.start_playback(uris=[uri])
+    track = sp.track(uri)
+    name = track["name"]
+    logging.info(f"Playing music: {name}")
+    talk_and_print(engine, f"Now playing: {name}")
+
 #complex modules
 
 def split_usr_command(text):
@@ -181,7 +199,7 @@ def execute_spotify_commands(commands_list, commands_map):
         action = commands_map.get(command)
         action()
 
-def intent_recognition(usr_input, joseh_model, engine):
+def intent_recognition(usr_input, joseh_model):
         logging.debug("Complex command detected! Passing input to Joseh Model...")
         clauses = split_usr_command(usr_input)
         detected = []
@@ -213,4 +231,30 @@ def check_simple_command(commands_map, base_model, text):
     else:
         return False, "null"
 
+def get_program_name(text, model):
+    doc = model(text)
+    for ent in doc.ents:
+        if ent.label_ == "program":
+            detected = ent.text
+            break
+    return detected
 
+def get_music_name(text, model):
+    detected = ""
+    doc = model(text)
+    for ent in doc.ents:
+        if ent.label == "program":
+            logging.error("The music name was recognized as a program")
+        detected = ent.text
+        logging.debug(f"The name recognized was: {detected}")
+        break
+    if not detected:
+        logging.error("The name was not recognized. the variable DETECTED will not return")
+    else:
+        return detected
+
+def get_music_id(name, sp):
+    logging.debug(f"Getting the ID of the music: {name}")
+    results = sp.search(q=name, type="track", limit=1)
+    track_uri = results["tracks"]["items"][0]["uri"]
+    return track_uri
