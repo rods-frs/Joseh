@@ -13,19 +13,28 @@ import platform
 import distro
 from os import system as sy
 
+#global variable
+joseh_muted = None
+
 #alsa error handler (made by AI)
+import sys
 import ctypes
 
-ERROR_HANDLER_FUNC = ctypes.CFUNCTYPE(None, ctypes.c_char_p, ctypes.c_int,
-                                       ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p)
-def py_error_handler(filename, line, function, err, fmt):
-    pass
-
-c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
-asound = ctypes.cdll.LoadLibrary('libasound.so.2')
-asound.snd_lib_error_set_handler(c_error_handler)
+if sys.platform.startswith("linux"):
+    ERROR_HANDLER_FUNC = ctypes.CFUNCTYPE(None, ctypes.c_char_p, ctypes.c_int,
+                                           ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p)
+    def py_error_handler(filename, line, function, err, fmt):
+        pass
+    c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
+    asound = ctypes.cdll.LoadLibrary('libasound.so.2')
+    asound.snd_lib_error_set_handler(c_error_handler)
 
 #configuration
+
+def mute_joseh():
+    logging.debug("mute_joseh function called!")
+    global joseh_muted
+    joseh_muted = True
 
 def setup():
     logging = logging_configuration()
@@ -39,7 +48,7 @@ def setup():
 
 def logging_configuration():
     logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
     return logging
@@ -83,8 +92,9 @@ def tts_configuration():
     return engine
 
 def talk_and_print(engine, text):
-    engine.say(text)
-    engine.runAndWait()
+    if not joseh_muted:
+        engine.say(text)
+        engine.runAndWait()
     print(text)
 
 def talk(engine, text):
@@ -191,6 +201,7 @@ def split_usr_command(text):
             continue
         p = p.strip()
         if p and p.lower() not in ('and', 'then', 'and then', 'also',',', ''):
+            logging.debug(f"Adding part to clean_parts: {p}")
             clean_parts.append(p)
     return clean_parts
 
@@ -200,7 +211,7 @@ def execute_spotify_commands(commands_list, commands_map):
         action()
 
 def intent_recognition(usr_input, joseh_model):
-        logging.debug("Complex command detected! Passing input to Joseh Model...")
+        logging.debug("Detecting intention....")
         clauses = split_usr_command(usr_input)
         detected = []
         for clause in clauses:
@@ -210,7 +221,10 @@ def intent_recognition(usr_input, joseh_model):
                     logging.debug(f"Intent {intent} added!")
                     logging.debug(f"Intent recognized: {intent}")
                     detected.append(intent)
-        return detected
+        if len(detected) >= 1: return detected
+        else:
+            logging.error("No intention were detected.")
+            return None
 
 def check_simple_command(commands_map, base_model, text):
     logging.debug("Checking if user command is simple... ")

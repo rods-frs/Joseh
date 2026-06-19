@@ -1,20 +1,26 @@
-#importing toolbox
+#importing libraries
 import joseh_toolbox as jt
 import speech_recognition as sr
 from time import sleep
+import random
 
 #initial setup
 logging, sp, base_model, cat_model, ner_model, OS, r, engine = jt.setup()
 
-#parameters
+#flags
 COMMAND_VIA_SPEECH = False
-SYSTEM_PASSWORD = "herocraft"
-SPEECH_WAIT_TIME = 10
+SKIP_SIMPLE_COMMAND_VERIFICATION = True
+JOSEH_MUTED = True
+flags = {"command_via_speech": COMMAND_VIA_SPEECH, "skip_simple_command_verification": SKIP_SIMPLE_COMMAND_VERIFICATION, "joseh_muted": JOSEH_MUTED}
 
 #variables pre-loading
 program_name = ""
 music_name = ""
+simple_command = ""
 
+#global variables
+SYSTEM_PASSWORD = "Herocraft"
+SPEECH_WAIT_TIME = 10
 commands_map = {
     "resume": lambda:jt.resume_music(engine, sp),
     "pause": lambda:jt.pause_music(engine, sp),
@@ -26,10 +32,20 @@ commands_map = {
     "open_program": lambda:jt.open_program(program_name),
     "play_music": lambda:jt.play_music(jt.get_music_id(music_name, sp), sp, engine)
 }
+special_intetions = ["open_program", "play_music"]
+introduction_phrases = ["Hello! I`m Joseh! How can I help?", "Hey! my name is Joseh, at your orders!", "Welcome! I`m Joseh! How can I help you today?"]
 
+#main code
 if __name__ == "__main__":
         logging.info("Program started")
-        jt.talk_and_print(engine, "Hello, my name is Joseh, at your orders!")
+        for flag, status in flags.items():
+            if status:
+                logging.warning(f"Active flag: {flag}")
+        if JOSEH_MUTED: jt.mute_joseh()
+        grettings_phrase = random.choice(introduction_phrases)
+        jt.talk_and_print(engine, grettings_phrase)
+
+        #main loop
         while True:
             if COMMAND_VIA_SPEECH:
                 while True:
@@ -52,7 +68,6 @@ if __name__ == "__main__":
             
             else:
                  print("="*10)
-                 logging.debug("Speech commands are disabled")
                  jt.talk_and_print(engine, "Whats your command?")
                  usr_input = str(input(">> "))
                  logging.debug(f"User input: {usr_input}")
@@ -63,28 +78,35 @@ if __name__ == "__main__":
                 logging.info("Session finished by the user")
                 break
             
-            simple_command, command_list = jt.check_simple_command(commands_map, base_model, usr_input)
-            if simple_command:
-                logging.debug("Simple command detected! Executing...")
-                jt.execute_spotify_commands(command_list, commands_map)
+            if not SKIP_SIMPLE_COMMAND_VERIFICATION:
+                simple_command, command_list = jt.check_simple_command(commands_map, base_model, usr_input)
+                if simple_command:
+                    logging.debug("Simple command detected! Executing...")
+                    jt.execute_spotify_commands(command_list, commands_map)
 
-            else:
-                logging.debug("Complex command detected! Passing input to Joseh NLP model...")
+            else: logging.warning("Skip simple command verification parameter is active. Skipping verification...")
+
+            if not simple_command or SKIP_SIMPLE_COMMAND_VERIFICATION:
+                logging.debug("simple_command returned None or SKIP_SIMPLE_COMMAND_VERIFICATION is active. Passing user command to Joseh...")
                 intents = jt.intent_recognition(usr_input, cat_model)
-                for intention in intents:
-                    action = commands_map.get(intention)
-                    if action:
-                        if intention == "open_program":
-                            logging.debug("Program intent recognized")
-                            program_name = jt.get_program_name(usr_input, ner_model)
-                            logging.debug(f"Program name recognized: {program_name}")
-                        elif intention == "play_music":
-                            logging.debug("play music intent recognized")
-                            music_name = jt.get_music_name(usr_input, ner_model)
-                            logging.debug(f"Music name recognized: {music_name}")
-                        jt.talk_and_print(engine, f"Executing command: {intention}")
-                        print("="*10)
-                        sleep(1.5)
-                        action()
+                if intents:
+                    for intention in intents:
+                        action = commands_map.get(intention)
+                        if action:
+                            if intention in special_intetions:
+                                logging.debug("Special intention recognized!")
+                                if intention == "open_program":
+                                    program_name = jt.get_program_name(usr_input, ner_model)
+                                    logging.debug(f"Program name recognized: {program_name}")
+                                elif intention == "play_music":
+                                    music_name = jt.get_music_name(usr_input, ner_model)
+                                    logging.debug(f"Music name recognized: {music_name}")
+                            jt.talk_and_print(engine, f"Executing command: {intention}")
+                            print("="*10)
+                            sleep(1.5)
+                            action()
+                else:
+                    logging.error("No intents were returned from the model.")
+                    jt.talk_and_print(engine, "Sorry, i couldnt recognize your intention. Please try using other words or a simples phrase.")
 
             
