@@ -1,4 +1,2 @@
-import spacy
-import joseh_toolbox as jt
-
-base_nlp, cat_model, ner_model = jt.load_models()
+import keyring
+keyring.delete_password("joseh", "system_password")
