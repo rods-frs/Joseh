@@ -161,3 +161,6 @@ cython_debug/
 testsORtrash.py
 temp_code.py
 testsORtrash.py
+
+#vosk model
+tools/sst/vosk-model-en-us-0.22
