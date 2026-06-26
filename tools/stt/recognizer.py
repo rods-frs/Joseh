@@ -5,7 +5,7 @@ import logging
 
 #configure logging
 global sst_logger
-sst_logger = logging.getLogger("SST")
+sst_logger = logging.getLogger("STT")
 
 def load_model(model_path):
     try:
