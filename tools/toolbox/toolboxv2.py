@@ -4,30 +4,9 @@ import subprocess
 import platform
 import distro
 import keyring
+from core.error_handler import ToolboxError
 
-global toolbox_logger
 toolbox_logger = logging.getLogger("TB")
-
-class ToolboxError(Exception):
-    def __init__(self, message):
-        toolbox_logger.error(message)
-        super().__init__(message)
-
-def split_command(text):
-    toolbox_logger.debug(f"Splitting command: {text}")
-    try:
-        parts = re.split(r'\b(and then|and|also|then)\b|(\s*,\s*)', text, flags=re.IGNORECASE)
-        clean_parts = []
-        for p in parts:
-            if p is None:
-                continue
-            p = p.strip()
-            if p and p.lower() not in ('and', 'then', 'and then', 'also',',', ''):
-                toolbox_logger.debug(f"Adding part to clean_parts: {p}")
-                clean_parts.append(p)
-        return clean_parts
-    except Exception as e:
-        raise ToolboxError(f"Failed to split command: {e}")
 
 def detect_os():
     global OS
@@ -60,7 +39,7 @@ def check_and_create_system_credentials():
                 else: toolbox_logger.error(f"The input {user_response} is not valid, please try again.")
         else: toolbox_logger.debug("User password was found in the keyring.")
     except Exception as e:
-        toolbox_logger.error(f"Failed to process user password from the keyring: {e}")
+        raise ToolboxError(f"Failed to process user password from the keyring: {e}")
 
 def delete_user_password():
     toolbox_logger.info("Starting user password deletion from the keyring")
@@ -81,6 +60,7 @@ def delete_user_password():
 
 def update_system():
     toolbox_logger.debug("Starting system update module")
+    detect_os()
     if "Fedora" in OS:
         command = ["sudo", "-S", "dnf", "upgrade", "-y"]
     elif "Ubuntu" in OS:

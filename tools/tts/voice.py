@@ -2,7 +2,7 @@ import pyttsx3
 import logging
 
 global tts_logger
-tts_logger = logging.GetLogger("TTS")
+tts_logger = logging.getLogger("TTS")
 
 global joseh_muted
 joseh_muted = False
@@ -22,7 +22,8 @@ def tts_configuration(rate=150):
         raise TTSError(f"Failed to start the TTS module: {e}")
 
 def mute_joseh():
-    tts_logger.debug("Joseh is now muted")
+    tts_logger.warning("mute_joseh flag is active!")
+    global joseh_muted
     joseh_muted = True
 
 def talk_and_print(text):

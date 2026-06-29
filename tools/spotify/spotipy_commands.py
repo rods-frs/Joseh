@@ -3,14 +3,11 @@ import os
 import logging
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
+from core.error_handler import SpotifyError, SpotifyTrackNotFound
+from spotipy import SpotifyException
 
-#configure logger and error class
-global spotify_logger
-spotify_logger = logging.getLogger("spotify_logger")
-class SpotifyError(Exception):
-    def __init__(self, message):
-        spotify_logger.error(message)
-        super().__init__(message)
+#configure logger
+spotify_logger = logging.getLogger("SP")
 
 #credential stuff
 
@@ -26,7 +23,7 @@ def check_credential():
             spotify_logger.debug("Credential is not present")
             return False
     except Exception as e:
-        spotify_logger.error(f"Error while checking the user credentials: {e}")
+        raise SpotifyError(f"Error while checking the user credentials: {e}")
 
 def create_credential():
     try:
@@ -34,8 +31,8 @@ def create_credential():
         client_id = str(input("Please type your cliend ID: "))
         client_secret = str(input("Now, please type the secret: "))
         credentials_correct = False
-        while not credentials_correct:
-            user_response = (f"""Please check the credentials. Are they correct?\nclient_id: {client_id}\nclient_secret: {client_secret}\n(y/n)>> """)
+        while credentials_correct == False:
+            user_response = str(input(f"Please check the credentials. Are they correct?\nclient_id: {client_id}\nclient_secret: {client_secret}\n(y/n)>> "))
             if user_response.lower() == "y":
                 spotify_logger.info("User confirmed the credentials")
                 try:
@@ -48,7 +45,7 @@ def create_credential():
             elif user_response.lower() == "n":
                 spotify_logger.debug("User did not confirmed the credentials.")
     except Exception as e:
-        spotify_logger.error(f"Failed to create the user credentials: {e}")
+        raise SpotifyError(f"Failed to create the user credentials: {e}")
     return True if credentials_correct else False
 
 def spotipy_configuration(USER_REDIRECT_URL="http://127.0.0.1:8888/callback"):
@@ -63,10 +60,8 @@ def spotipy_configuration(USER_REDIRECT_URL="http://127.0.0.1:8888/callback"):
         redirect_uri=USER_REDIRECT_URL,
         scope="user-modify-playback-state user-read-playback-state user-library-read playlist-read-private"
         ))
-        return True
     except Exception as e:
-        spotify_logger.error(f"Failed to configure Spotipy: {e}")
-        return False
+        raise SpotifyError(f"Failed to configure Spotipy: {e}")
 
 #command list
 def spotify_command_list():
@@ -74,12 +69,12 @@ def spotify_command_list():
     global track_name, command_map
     track_name = ""
     command_map = {
-        "resume": lambda:resume_track(),
-        "pause": lambda:pause_track(),
-        "next": lambda:next_track(),
-        "previous": lambda:previous_track(),
-        "get_music": lambda:get_current_track(),
-        "play_music": lambda:play_track(get_track_id(track_name))
+        "resume":resume_track,
+        "pause":pause_track,
+        "next":next_track,
+        "previous":previous_track,
+        "get_music":get_current_track,
+        "play_music":play_music
     }
 
 #spotify commands
@@ -144,6 +139,13 @@ def previous_track():
     except Exception as e:
         raise SpotifyError(f"Failed to go to previous track: {e}")
 
+def play_music(play_music_idx, special_clauses, ner_function):
+    text = special_clauses[play_music_idx]
+    music_name = ner_function(text, "music")
+    track_id = get_track_id(music_name)
+    play_track(track_id)
+    return music_name
+
 def play_track(uri):
     spotify_logger.debug(f"Trying to play the track with the URI: {uri}")
     try:
@@ -161,12 +163,29 @@ def get_track_id(name):
         track_uri = results["tracks"]["items"][0]["uri"]
         spotify_logger.debug("URI found!")
         return track_uri
+    except SpotifyException as e:
+        if e.http_status == 404:
+            raise SpotifyTrackNotFound(f"The track with the name '{name}' was not found")
     except Exception as e:
         raise SpotifyError(f"Failed to get the track URI: {e}")
 
-def execute_spotify_commands(commands_list):
-    spotify_logger.debug(f"Executing commands: {command_map}")
+def execute_spotify_commands(commands_list, special_clauses, ner_function):
+    spotify_logger.debug(f"Executing commands: {commands_list}")
+
+    play_music_idx = 0 #this is used to make the play_music take the correct clause with the correct music request
+
     for command in commands_list:
         action = command_map.get(command)
-        action()
+        try:
+            if command == 'play_music':
+                result = action(play_music_idx, special_clauses, ner_function)
+                play_music_idx += 1
+                print(f"Now playing: {result}")
+            else:
+                result = action()
+                if result:
+                    if command == 'get_music':
+                        print(f"Now playing: {result}")
+        except SpotifyError:
+            pass
 
