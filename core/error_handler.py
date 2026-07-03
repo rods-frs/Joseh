@@ -29,3 +29,11 @@ class SpotifyError(JosehError):
 
 class SpotifyTrackNotFound(SpotifyError):
     pass
+
+class BuiltInCommandsError(JosehError):
+    _logger = logging.getLogger("BIC")
+    def __init__(self, message, _logger):
+        super().__init__(message, _logger)
+
+class BICommandNotFound(BuiltInCommandsError):
+    pass

@@ -48,3 +48,10 @@ def configure_logging():
     nlp_logger.addHandler(logging.FileHandler("core/logs/nlp.log"))
     nlp_logger.addHandler(universal_handler)
     nlp_logger.propagate = False
+
+    #//builtincommands logger
+    bic_logger = logging.getLogger("BIC")
+    bic_logger.setLevel(logging.DEBUG)
+    bic_logger.addHandler(logging.FileHandler("core/logs/bic.log"))
+    bic_logger.addHandler(universal_handler)
+    bic_logger.propagate = False

@@ -11,7 +11,7 @@ spotify_logger = logging.getLogger("SP")
 
 #credential stuff
 
-def check_credential():
+def check_spotify_credential():
     try:
         spotify_logger.debug("Checking .env for user spotify credential")
         load_dotenv()

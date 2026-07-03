@@ -1,5 +1,6 @@
 import logging
 from core.logging_configuration import configure_logging
+from core import builtin_commands
 #from tools.tts import voice
 #from tools.stt.recognizer import load_model
 #from tools.stt.recognizer import create_mic
@@ -35,18 +36,34 @@ if SKIP_NOUN_WARNING:
 #if mute_joseh: voice.mute_joseh()
 
 #//spotify
-credentials_present = spotipy_commands.check_credential()
-if not credentials_present:
-    credentials_present = spotipy_commands.create_credential() #returns true if the credentials were created succesfully
-    if credentials_present: spotipy_commands.spotipy_configuration()
-else: spotipy_commands.spotipy_configuration()
+spotify_credentials_present = spotipy_commands.check_spotify_credential()
+if not spotify_credentials_present:
+    main_logger.warning("Spotify credentials are not present! To create type 'direct command mode' into Joseh and then type '2'.")
+else: 
+    spotipy_commands.spotipy_configuration()
 
 #//nlp
 model.init_models()
 
+#//system credentials check
+system_credentials_present = builtin_commands.check_system_credentials()
+if not system_credentials_present:
+    main_logger.warning("System credentials were not set. To set please type 'direct command mode', then '1'.")
+
 #//user commands
 SPOTIFY_COMMANDS = ['resume', 'pause', 'next', 'previous', 'get_music', 'play_music']
 TOOLBOX_COMMANDS = ['update', 'date', 'open_program']
+
+#custom commands configuration
+def custom_command_mode():
+    #custom commands codes:
+    #001 - delete user password
+    usr_command = int(input(">> "))
+    if usr_command == 1:
+        try:
+            toolboxv2.delete_user_password()
+        except JosehError as e:
+            pass
 
 #/main loop
 main_logger.debug("Joseh started")
@@ -65,25 +82,39 @@ while session_finished == False:
     else:
         while not valid_command:
             user_command = str(input("What`s your command?\n>> "))
-            try:
-                detected_commands, special_clauses = model.detect_intent(user_command)
-                main_logger.debug(f"Command(s) validated. Detected commands: {', '.join(detected_commands)}")
-                valid_command = True
-            except InvalidCommand as e:
-                print(f"The command '{user_command}' has not being recognized. Please try different words of a different command.")
-            except JosehError as e:
-                print(f"Something went wrong, please try again. Specific error: {e}")
+            if user_command.lower() == "exit":
+                main_logger.info("User finished the session")
+                session_finished = True
+                break
+            elif user_command.lower() == "custom command mode":
+                custom_command_mode()
+                break
+            elif user_command.lower() == "direct command mode":
+                builtin_commands.direct_command_mode()
+                break
+            else:
+                try:
+                    detected_commands, special_clauses = model.detect_intent(user_command)
+                    main_logger.debug(f"Command(s) validated. Detected commands: {', '.join(detected_commands)}")
+                    valid_command = True
+                except InvalidCommand as e:
+                    print(f"The command '{user_command}' has not being recognized. Please try different words of a different command.")
+                except JosehError as e:
+                    print(f"Something went wrong, please try again. Specific error: {e}")
 
         for command in detected_commands:
             if command in SPOTIFY_COMMANDS:
-                sp_detected_commands.append(command)
+                if spotify_credentials_present:
+                        sp_detected_commands.append(command)
+                else: main_logger.warning(f"Spotify credentials were not set. Ignoring command {command}")
             else:
-                tb_detected_commands.append(command)
-
+                if not system_credentials_present and command == "update": main_logger.error(f"System credentials were not set. Ignoring command {command}")
+                else:
+                    tb_detected_commands.append(command)
         try:
             if sp_detected_commands:
                 spotipy_commands.spotify_command_list()
-            spotipy_commands.execute_spotify_commands(sp_detected_commands, special_clauses if special_clauses else [], ner_function=model.detect_noun_name)
+                spotipy_commands.execute_spotify_commands(sp_detected_commands, special_clauses if special_clauses else [], ner_function=model.detect_noun_name)
             if tb_detected_commands:
                 pass
         except JosehError as e:

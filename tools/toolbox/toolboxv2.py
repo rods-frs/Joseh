@@ -5,6 +5,7 @@ import platform
 import distro
 import keyring
 from core.error_handler import ToolboxError
+from datetime import datetime
 
 toolbox_logger = logging.getLogger("TB")
 
@@ -18,45 +19,6 @@ def detect_os():
         OS = "windows"
     toolbox_logger.debug(f"Recognized OS: {OS}")
     return OS
-
-def check_and_create_system_credentials():
-    toolbox_logger.debug("Checking for user password in system keyring...")
-    try:
-        global USER_PASSWORD
-        USER_PASSWORD = keyring.get_password("joseh", "system_password")
-        if not USER_PASSWORD:
-            toolbox_logger.debug("User password is not in the keyring.")
-            while True:
-                user_response = str(input("Could you please write your password? (y/n) >> "))
-                if user_response.lower() == "y": 
-                    USER_PASSWORD = str(input("Please type your password: "))
-                    keyring.set_password("joseh", "system_password", USER_PASSWORD)
-                    toolbox_logger.debug("Password was sent to the keyring")
-                    break
-                elif user_response == "n":
-                    toolbox_logger.warning("User opted to not give the system password.")
-                    break
-                else: toolbox_logger.error(f"The input {user_response} is not valid, please try again.")
-        else: toolbox_logger.debug("User password was found in the keyring.")
-    except Exception as e:
-        raise ToolboxError(f"Failed to process user password from the keyring: {e}")
-
-def delete_user_password():
-    toolbox_logger.info("Starting user password deletion from the keyring")
-    try:
-        while True:
-            usr_response = str(input("Do you really want to delete your password from the keyring? (y/n) >> "))
-            if usr_response.lower() == "y":
-                keyring.delete_password("joseh", "system_password")
-                toolbox_logger.info("Password deleted from the keyring.")
-                break
-            elif usr_response.lower() == "n":
-                toolbox_logger.info("Aborting deletion")
-                break
-            else:
-                toolbox_logger.error(f"The input {usr_response} is not valid. Please try again.")
-    except Exception as e:
-        raise ToolboxError(f"Failed to delete the user password from the keyring: {e}")
 
 def update_system():
     toolbox_logger.debug("Starting system update module")
@@ -74,4 +36,8 @@ def update_system():
         toolbox_logger.info("System updated!")
     except Exception as e:
         raise ToolboxError(f"Failed to update the system: {e}")
+
+def get_date():
+    toolbox_logger.debug("Getting date")
+    print(f"Today is: {datetime.today().strftime(r'"%A, %B %dst %Y"')}")
 
