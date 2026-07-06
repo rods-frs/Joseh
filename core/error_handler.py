@@ -37,3 +37,8 @@ class BuiltInCommandsError(JosehError):
 
 class BICommandNotFound(BuiltInCommandsError):
     pass
+
+class CustomCommandError(JosehError):
+    _logger = logging.getLogger("CC")
+    def __init__(self, message, _logger):
+        super().__init__(message, _logger)

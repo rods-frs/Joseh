@@ -5,14 +5,17 @@ from core.error_handler import BuiltInCommandsError, BICommandNotFound
 
 bic_logger = logging.getLogger("BIC")
 
-def direct_command_mode():
+def direct_command_mode(spotify_credentials_creation):
     bic_logger.info("Entering direct command mode. Type 'exit' to leave")
     valid_command = False
     while not valid_command:
         user_command = int(input("Type the number code of your command: "))
-        for key, value in commands_map:
+        for key, value in commands_map.items():
             if user_command == key: 
-                value()
+                if key == 3:
+                    value(spotify_credentials_creation)
+                else:
+                    value()
                 valid_command = True
         if not valid_command: BuiltInCommandsError("The code {user_command} is not a valid code. Please try again or type 'exit'.")
 
@@ -66,4 +69,7 @@ def delete_user_password():
     except Exception as e:
         raise BuiltInCommandsError(f"Failed to delete the user password from the keyring: {e}")
 
-commands_map = {1: create_system_credentials, 2: delete_user_password}
+def create_spotify_credentials(spotify_function):
+    spotify_function()
+
+commands_map = {1: create_system_credentials, 2: delete_user_password, 3: create_spotify_credentials}

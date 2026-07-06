@@ -21,7 +21,7 @@ def split_command(text):
     except Exception as e:
         raise NLPError(f"Failed to split command: {e}")
 
-def init_models(CAT_MODEL_PATH='/home/rodrigo/Joseh/tools/model/joseh_cat_model_v2', NER_MODEL_PATH='/home/rodrigo/Joseh/tools/model/joseh_ner_model_v2'):
+def init_models(CAT_MODEL_PATH='tools/model/joseh_cat_model_v2', NER_MODEL_PATH='tools/model/joseh_ner_model_v2'):
     nlp_logger.debug("Starting init of the NLP models")
     try:
         global base_model
