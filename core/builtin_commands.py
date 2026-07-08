@@ -2,6 +2,7 @@ import logging
 import keyring
 from dotenv import set_key
 from core.error_handler import BuiltInCommandsError, BICommandNotFound
+from tools.toolbox import toolboxv2
 
 bic_logger = logging.getLogger("BIC")
 
@@ -72,4 +73,7 @@ def delete_user_password():
 def create_spotify_credentials(spotify_function):
     spotify_function()
 
-commands_map = {1: create_system_credentials, 2: delete_user_password, 3: create_spotify_credentials}
+def execute_specific_function():
+    toolboxv2.open_program("steam")
+
+commands_map = {1: create_system_credentials, 2: delete_user_password, 3: create_spotify_credentials, 4:execute_specific_function}

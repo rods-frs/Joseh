@@ -22,6 +22,12 @@ class ToolboxError(JosehError):
     def __init__(self, message):
         super().__init__(message, self._logger)
 
+class FlatpakModuleError(ToolboxError):
+    pass
+
+class ProgramNotFound(ToolboxError):
+    pass
+
 class SpotifyError(JosehError):
     _logger = logging.getLogger("SP")
     def __init__(self, message):

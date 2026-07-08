@@ -43,19 +43,23 @@ if not spotify_credentials_present:
 else: 
     spotipy_commands.spotipy_configuration()
 
-#//nlp
-model.init_models()
-
 #//system credentials check
 system_credentials_present = builtin_commands.check_system_credentials()
 if not system_credentials_present:
     main_logger.warning("System credentials were not set. To set please type 'direct command mode', then '1'.")
+
+#//nlp
+model.init_models()
+
+#//flatpak module
+toolboxv2.get_installed_flatpak_programs()
 
 #//user commands
 SPOTIFY_COMMANDS = ['resume', 'pause', 'next', 'previous', 'get_music', 'play_music']
 TOOLBOX_COMMANDS = ['update', 'date', 'open_program']
 
 #/main functions
+user_command = ""
 def execute_general_command(detected_commands):
     for command in detected_commands:
         if command in SPOTIFY_COMMANDS:
@@ -71,7 +75,7 @@ def execute_general_command(detected_commands):
             spotipy_commands.spotify_command_list()
             spotipy_commands.execute_spotify_commands(sp_detected_commands, special_clauses if special_clauses else [], ner_function=model.detect_noun_name)
         if tb_detected_commands:
-            pass
+            toolboxv2.execute_toolbox_commands(tb_detected_commands, special_clauses if special_clauses else [], ner_function=model.detect_noun_name)
     except JosehError as e:
         print(f"Something went wrong. Specific error: {e}")
 

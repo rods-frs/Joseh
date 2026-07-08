@@ -43,8 +43,8 @@ for label in labels:
 #//
 
 #parameters
-TRAINING_CSV = r"model_training/joseh_training_data3_updated.csv"
-MODEL_NAME = "joseh_cat_model_v2"
+TRAINING_CSV = r"model_training/cat_training_data_v1.csv"
+MODEL_NAME = "joseh_cat_model_v3"
 
 cat_training_data = []
 
