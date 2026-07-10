@@ -37,11 +37,17 @@ def update_system():
     try:
         toolbox_logger.debug("Executing update command.")
         result = subprocess.run(command,input=f"{_USER_PASSWORD}\n",text=True,capture_output=True,check=True)
+        updated_packages = []
         for line in result.stdout.splitlines():
-            if "nothing to do" in line.lower():
-                print("System is already updated")
-            elif "upgrad " in line:
-                print(line)
+            if "upgrading" in line.lower():
+                updated_packages.append(line.removeprefix("upgrading "))
+        if len(updated_packages) <= 1:
+            toolbox_logger.info("System is already updated")
+        else:
+            print("Packages updated:")
+            for package in updated_packages:
+                print(package)
+        toolbox_logger.info("Update finished.")
     except Exception as e:
         toolbox_logger.error(f"stderr: {getattr(e, 'stderr', 'N/A')}")
         raise ToolboxError(f"Failed to update the system: {e}")

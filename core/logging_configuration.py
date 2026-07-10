@@ -55,3 +55,10 @@ def configure_logging():
     bic_logger.addHandler(logging.FileHandler("core/logs/bic.log"))
     bic_logger.addHandler(universal_handler)
     bic_logger.propagate = False
+
+    #//builtincommands logger
+    session_logger = logging.getLogger("SESSION")
+    session_logger.setLevel(logging.DEBUG)
+    session_logger.addHandler(logging.FileHandler("core/logs/session.log"))
+    session_logger.addHandler(universal_handler)
+    session_logger.propagate = False

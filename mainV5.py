@@ -11,6 +11,7 @@ from tools.spotify import spotipy_commands
 from tools.model import model
 from tools.toolbox import toolboxv2
 from core.error_handler import JosehError, NLPError, InvalidCommand, NoNounDetected, ToolboxError, SpotifyError, SpotifyTrackNotFound
+from session import session
 
 #/logging configuration
 
@@ -26,6 +27,11 @@ command_via_speech = False
 SKIP_NOUN_WARNING = True
 if SKIP_NOUN_WARNING:
     model.enable_ignore_type_warning_flag()
+flags = {"command_via_speech": command_via_speech, "skip_noun_warning": SKIP_NOUN_WARNING}
+for name, value in flags.items():
+    active_flags = []
+    if value:
+        active_flags.append(name)
 
 #/start configuration
 #//stt
@@ -54,74 +60,11 @@ model.init_models()
 #//flatpak module
 toolboxv2.get_installed_flatpak_programs()
 
-#//user commands
-SPOTIFY_COMMANDS = ['resume', 'pause', 'next', 'previous', 'get_music', 'play_music']
-TOOLBOX_COMMANDS = ['update', 'date', 'open_program']
-
-#/main functions
-user_command = ""
-def execute_general_command(detected_commands):
-    for command in detected_commands:
-        if command in SPOTIFY_COMMANDS:
-            if spotify_credentials_present:
-                    sp_detected_commands.append(command)
-            else: main_logger.warning(f"Spotify credentials were not set. Ignoring command {command}")
-        else:
-            if not system_credentials_present and command == "update": main_logger.error(f"System credentials were not set. Ignoring command {command}")
-            else:
-                tb_detected_commands.append(command)
-    try:
-        if sp_detected_commands:
-            spotipy_commands.spotify_command_list()
-            spotipy_commands.execute_spotify_commands(sp_detected_commands, special_clauses if special_clauses else [], ner_function=model.detect_noun_name)
-        if tb_detected_commands:
-            toolboxv2.execute_toolbox_commands(tb_detected_commands, special_clauses if special_clauses else [], ner_function=model.detect_noun_name)
-    except JosehError as e:
-        print(f"Something went wrong. Specific error: {e}")
-
 #/main loop
 main_logger.debug("Joseh started")
 session_finished = False
-while session_finished == False:
-    print("=/"*10)
-    main_logger.info("New session started")
-    sp_detected_commands =[]
-    tb_detected_commands = []
-    valid_command = False
-    special_command = False
-    #//speech commands
-    if command_via_speech:
-        pass
-        #wake_word_heard = wake_word_detection(stt_model, mic_object, wake_word)
-        #print(wake_word_heard)
-    else:
-        while not valid_command:
-            user_command = str(input("What`s your command?\n>> "))
-            if user_command.lower() == "exit":
-                main_logger.info("User finished the session")
-                session_finished = True
-                special_command = True
-                break
-            elif user_command.lower() == "custom command mode":
-                custom_commands.custom_command_executer()
-                valid_command = True
-                special_command = True
-                break
-            elif user_command.lower() == "direct command mode":
-                builtin_commands.direct_command_mode(spotipy_commands.create_credential)
-                valid_command = True
-                special_command =  True
-                break
-            else:
-                try:
-                    detected_commands, special_clauses = model.detect_intent(user_command)
-                    main_logger.debug(f"Command(s) validated. Detected commands: {', '.join(detected_commands)}")
-                    valid_command = True
-                except InvalidCommand as e:
-                    print(f"The command '{user_command}' has not being recognized. Please try different words of a different command.")
-                except JosehError as e:
-                    print(f"Something went wrong, please try again. Specific error: {e}")
-
-        if not special_command:
-            execute_general_command(detected_commands)
-        main_logger.info("Session finished.")
+for flag in active_flags:
+    main_logger.warning(f"Active flag: {flag}")
+while not session_finished:
+    session_finished = session(active_flags)
+    main_logger.info("Session finished.")
