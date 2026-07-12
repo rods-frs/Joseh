@@ -76,32 +76,7 @@ def create_spotify_credentials(spotify_function):
     spotify_function()
 
 def execute_specific_function():
-    PACMAN_OUTPUT = (
-    ":: Synchronizing package databases...\n"
-    " core                  150.0 KiB\n"
-    " extra                   8.0 MiB\n"
-    ":: Starting full system upgrade...\n"
-    "resolving dependencies...\n"
-    "looking for conflicting packages...\n"
-    "\n"
-    "Packages (3) python-3.12.3-1  git-2.45.0-1  curl-8.7.1-1\n"
-    "\n"
-    "Total Installed Size:  45.23 MiB\n"
-    "Net Upgrade Size:       0.12 MiB\n"
-    "\n"
-    ":: Proceed with installation? [Y/n]\n"
-    ":: Processing package changes...\n"
-    "upgrading python (3.11.8-1 -> 3.12.3-1)\n"
-    "upgrading git (2.44.0-1 -> 2.45.0-1)\n"
-    "upgrading curl (8.6.0-1 -> 8.7.1-1)\n"
-    ":: Running post-transaction hooks...\n"
-    "Update finished.\n"
-)
-    fake_result = MagicMock()
-    fake_result.return_value = 0
-    fake_result.stdout = PACMAN_OUTPUT
-    fake_result.stderr = ""
-    with patch("subprocess.run", return_value=fake_result):
-        toolboxv2.update_system()
+    package = toolboxv2.search_flatpak("pods")
+    toolboxv2.install_flatpak(package)
 
 commands_map = {1: create_system_credentials, 2: delete_user_password, 3: create_spotify_credentials, 4:execute_specific_function}

@@ -61,7 +61,13 @@ def get_installed_flatpak_programs():
     try:
         toolbox_logger.debug("Getting the installed flatpak programs")
         global installed_flatpaks
-        installed_flatpaks = subprocess.run(name_command,text=True,capture_output=True,check=True)
+        installed_flatpaks_raw = subprocess.run(name_command,text=True,capture_output=True,check=True)
+        installed_flatpaks = []
+        times_ran = 0
+        for line in installed_flatpaks_raw.stdout.splitlines():
+            if times_ran != 0:
+                installed_flatpaks.append(line)
+            times_ran += 1
     except Exception as e:
         raise FlatpakModuleError(f"stderr: {getattr(e, 'stderr', 'N/A')}")
 
@@ -70,14 +76,13 @@ def start_flatpak_program(program):
         #try to find the program in the installed program list
         program_found = False
         toolbox_logger.debug(f"Trying to find a Flatpak by the name {program}")
-        for line in installed_flatpaks.stdout.splitlines():
-            if program in line.lower():
-                toolbox_logger.debug("Program named is installed!")
+        for package in installed_flatpaks:
+            if program in package.lower():
+                toolbox_logger.debug(f"Package found: {package}")
                 program_found = True
-                print(line)
-                execution_command = ["flatpak", "run", line]
+                execution_command = ["flatpak", "run", package]
                 try:
-                    toolbox_logger.debug(f"Trying to execute the program by the ID {line}")
+                    toolbox_logger.debug(f"Trying to execute the program by the ID {package}")
                     subprocess.Popen(execution_command,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)
                 except Exception as e:
                     raise FlatpakModuleError(f"stderr: {getattr(e, 'stderr', 'N/A')}")
@@ -121,6 +126,32 @@ def open_program(ner_function, special_clauses, special_clauses_index):
             raise
     else:
         raise
+
+def search_flatpak(package_name):
+    search_command = ['flatpak', 'search', '--columns=application', package_name]
+    try:
+        toolbox_logger.debug(f"Searching for Flatpak {package_name}")
+        query_result = subprocess.run(search_command, capture_output=True, text=True, check=True)
+        query_result = query_result.stdout.splitlines()
+        package_id = ""
+        for package in query_result:
+            if package_name.lower() in package.lower():
+                package_id = package
+        if package_id: 
+            toolbox_logger.debug("Package found!")
+            return package_id
+        else: return None
+    except Exception as e:
+        raise FlatpakModuleError(f"Failed to search for the package {package_name}: {getattr(e, 'stderr', 'N/A')} | error: {e}")
+        
+def install_flatpak(package_id):
+    install_command = ['flatpak', 'install', '-y', package_id]
+    try:
+        toolbox_logger.info(f"Trying to install app by the ID {package_id}...")
+        subprocess.run(install_command, text=True, capture_output=True, check=True)
+        toolbox_logger.info(f"Package installed!")
+    except Exception as e:
+        FlatpakModuleError(f"Failed to install the package: stderr: {getattr(e, 'stderr', 'N/A')} | error: {e}")
 
 command_index = {"update":update_system, "date":get_date, "open_program":open_program}
 
