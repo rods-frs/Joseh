@@ -1,0 +1,1080 @@
+phrase,intent
+resume the music,resume
+resume playback,resume
+continue the music,resume
+continue playing,resume
+play the music again,resume
+unpause the music,resume
+unpause playback,resume
+keep playing,resume
+start playing again,resume
+resume my music,resume
+play again,resume
+continue my playlist,resume
+resume the song,resume
+get the music going again,resume
+let the music play,resume
+resume audio,resume
+bring the music back,resume
+resume track,resume
+continue the track,resume
+go on playing,resume
+keep the music going,resume
+resume where it stopped,resume
+play from where it was,resume
+unpause the song,resume
+resume the playlist,resume
+get it going again,resume
+start the music back up,resume
+I want to keep listening,resume
+bring back the sound,resume
+let it play,resume
+start it up again,resume
+pick up where it left off,resume
+continue from where it was,resume
+get the song going,resume
+hit play again,resume
+take it off pause,resume
+go ahead and play,resume
+keep going with the music,resume
+don't stop let it go,resume
+I want to hear it again,resume
+pause the music,pause
+pause playback,pause
+stop the music for a moment,pause
+pause my music,pause
+hold the music,pause
+pause the song,pause
+pause the track,pause
+stop the song,pause
+pause audio,pause
+wait stop the music,pause
+hold on pause this,pause
+pause my playlist,pause
+freeze the music,pause
+pause it,pause
+stop playing for now,pause
+halt the music,pause
+pause this track,pause
+put the music on hold,pause
+pause the current song,pause
+can you pause,pause
+suspend the music,pause
+stop the playback,pause
+pause for a second,pause
+hold the playback,pause
+pause everything,pause
+cut the music for now,pause
+stop it for a sec,pause
+can you stop the music,pause
+hold on a second,pause
+give it a break,pause
+stop it right there,pause
+freeze the track,pause
+silence the music for now,pause
+take a pause please,pause
+hit pause,pause
+pause what's playing,pause
+stop playback now,pause
+pause right here,pause
+quiet the music for a moment,pause
+cut the audio,pause
+skip this song,next
+skip the track,next
+skip this one,next
+skip to the next song,next
+jump to the next track,next
+I don't like this song skip it,next
+skip this track please,next
+move to the next song,next
+can you skip,next
+skip forward,next
+hop to the next song,next
+go past this track,next
+skip the current song,next
+skip over this one,next
+this song is bad skip it,next
+pass this track,next
+skip my current song,next
+jump forward a track,next
+skip to next,next
+I want to skip this,next
+skip it,next
+advance to the next track,next
+go to next song,next
+skip please,next
+bypass this song,next
+next song,next
+play the next song,next
+go to the next track,next
+next track,next
+what's next,next
+I want the next song,next
+change to next,next
+go next,next
+next one,next
+play next,next
+move to next track,next
+I want to hear the next one,next
+switch to next song,next
+forward to next,next
+next please,next
+go forward,next
+play next track,next
+put on the next song,next
+advance the track,next
+go to next,next
+play what's next,next
+jump to the next one,next
+what comes next,next
+move forward a track,next
+not this one play something else,next
+I'm done with this one next,next
+change the song,next
+put on another song,next
+I don't want this track,next
+go ahead to the next,next
+move on to the next track,next
+this isn't it next please,next
+fast forward to the next,next
+keep moving next track,next
+I want something different,next
+go back to the last song,previous
+go back,previous
+play the previous track,previous
+back to last song,previous
+go to the previous track,previous
+back one song,previous
+rewind to the previous song,previous
+I want to hear the last song again,previous
+go backwards,previous
+step back a track,previous
+back please,previous
+play the song before,previous
+go back a track,previous
+back to the previous one,previous
+return to the last track,previous
+go back one,previous
+I missed the last song go back,previous
+return to previous,previous
+move back a song,previous
+previous please go back,previous
+undo the skip,previous
+step back one song,previous
+play what was before,previous
+go to last track,previous
+back a song,previous
+previous song,previous
+play the previous song,previous
+previous track,previous
+go to previous,previous
+I want the previous song,previous
+switch to previous,previous
+play what was before this,previous
+previous one please,previous
+go back to previous,previous
+last track,previous
+play the last one,previous
+take me to the previous song,previous
+previous please,previous
+the song before this,previous
+I want to hear the previous track,previous
+switch back,previous
+go to the track before,previous
+play the prior song,previous
+I liked the previous one play it,previous
+go to prior track,previous
+previous song please,previous
+return to previous song,previous
+play previous,previous
+back to previous track,previous
+the one before this,previous
+I want to go back,previous
+replay the last song,previous
+that last song was good go back,previous
+take me back one track,previous
+I want to hear that again,previous
+go one back,previous
+bring back the last song,previous
+what was playing before,previous
+go back in the playlist,previous
+I missed that one go back,previous
+jump back a song,previous
+move back to the previous,previous
+that was good rewind,previous
+update the system,update
+run a system update,update
+update everything,update
+check for updates,update
+install updates,update
+run updates,update
+do a system update,update
+update my system,update
+upgrade the system,update
+check for system updates,update
+install system updates,update
+run an upgrade,update
+update software,update
+upgrade packages,update
+update my packages,update
+do an upgrade,update
+system update please,update
+run package updates,update
+refresh the system,update
+apply updates,update
+upgrade my system,update
+update all packages,update
+check and install updates,update
+update now,update
+run system upgrade,update
+are there any updates available,update
+get the latest updates,update
+fetch updates,update
+sync the system,update
+pull in any new updates,update
+get everything up to date,update
+make sure the system is current,update
+patch the system,update
+update and upgrade,update
+run dnf update,update
+upgrade everything now,update
+is the system up to date,update
+bring the system up to date,update
+update installed packages,update
+what's the date today,date
+tell me the date,date
+what day is it,date
+what is today's date,date
+current date,date
+today's date,date
+what's today,date
+give me the date,date
+do you know the date,date
+what date is it,date
+tell me today's date,date
+can you tell me the date,date
+what is the current date,date
+I need the date,date
+date please,date
+what day of the week is it,date
+tell me what day it is,date
+is it Monday,date
+what month is it,date
+give me today's date,date
+date and day please,date
+what's today's date,date
+can you check the date,date
+tell me the current date,date
+what is today,date
+what's the day today,date
+tell me the day and date,date
+what's the full date,date
+is it the weekend,date
+what day are we on,date
+which day is today,date
+what number day is it,date
+do you know what day we're on,date
+tell me the weekday,date
+is today a weekday,date
+give me the current date,date
+tell me today,date
+what song is this,get_music
+what's playing right now,get_music
+what music is this,get_music
+what's the name of this song,get_music
+tell me the name of this track,get_music
+what song is playing,get_music
+what track is this,get_music
+can you tell me the song name,get_music
+what is this song called,get_music
+name this song,get_music
+what's the name of this music,get_music
+what am I listening to,get_music
+identify this song,get_music
+what track is playing,get_music
+tell me what song this is,get_music
+what's currently playing,get_music
+what's the song name,get_music
+who sings this,get_music
+what's the title of this song,get_music
+can you identify this track,get_music
+which song is on right now,get_music
+what song did you put on,get_music
+name this track,get_music
+tell me the current song,get_music
+what artist is playing,get_music
+what's the name of the current track,get_music
+who is this artist,get_music
+what song is this please,get_music
+I want to know the song name,get_music
+can you name this music,get_music
+which track is this,get_music
+what's on right now,get_music
+tell me what I'm listening to,get_music
+what's this called,get_music
+I want to know what song is playing,get_music
+do you know the name of this song,get_music
+what is the name of the current song,get_music
+tell me the track name,get_music
+can you identify what's playing,get_music
+what song did you pick,get_music
+play Bohemian Rhapsody,play_music
+put on Blinding Lights,play_music
+play some music,play_music
+can you play a song,play_music
+put on Hotel California,play_music
+play Lose Yourself,play_music
+can you play Billie Jean,play_music
+put on some music for me,play_music
+play Rolling in the Deep,play_music
+start playing music,play_music
+play a song please,play_music
+can you put on Shape of You,play_music
+play Heat Waves,play_music
+put on Levitating,play_music
+can you play some music,play_music
+play As It Was,play_music
+start some music,play_music
+put on a song for me,play_music
+can you play Sunflower,play_music
+play Bad Guy,play_music
+put on Circles,play_music
+play some tunes,play_music
+can you start playing a song,play_music
+play Rockstar please,play_music
+put on Watermelon Sugar,play_music
+play a track for me,play_music
+can you play Stay,play_music
+put on some tunes,play_music
+play Peaches,play_music
+start the music please,play_music
+can you put on a track,play_music
+play something for me,play_music
+put on Industry Baby,play_music
+play a song for me please,play_music
+can you play some tunes,play_music
+start playing Montero,play_music
+put on a playlist,play_music
+play the music please,play_music
+can you start the music,play_music
+play Old Town Road,play_music
+put on good 4 u,play_music
+play something relaxing,play_music
+can you play something for me,play_music
+put on some background music,play_music
+play a random song,play_music
+can you put on music,play_music
+start playing something,play_music
+play some background music,play_music
+put on a random song please,play_music
+can you play a random track,play_music
+open Sublime Text,open_program
+launch WhatsApp please,open_program
+open the note app for me,open_program
+open the video editor,open_program
+can you launch Control Panel,open_program
+can you open PowerPoint,open_program
+launch the app,open_program
+start Audition for me,open_program
+launch qBittorrent,open_program
+launch Jira please,open_program
+can you start Trello,open_program
+start GitHub Desktop for me,open_program
+launch the music player,open_program
+open Figma for me,open_program
+start Eclipse,open_program
+launch Atom,open_program
+launch VirtualBox please,open_program
+launch Excel,open_program
+start Blender for me,open_program
+can you start Steam,open_program
+can you open NetBeans,open_program
+can you start Skype,open_program
+launch Krita please,open_program
+launch Discord,open_program
+can you launch Outlook,open_program
+start the media player for me,open_program
+can you open the disk utility,open_program
+start Anaconda for me,open_program
+launch Telegram please,open_program
+please open GitKraken,open_program
+start GIMP,open_program
+please open IntelliJ,open_program
+can you open Nextcloud,open_program
+start Paint,open_program
+can you start Inkscape,open_program
+launch Docker please,open_program
+open LibreOffice,open_program
+can you launch DaVinci Resolve,open_program
+start Brave,open_program
+start Konsole for me,open_program
+open Premiere Pro,open_program
+can you launch DataGrip,open_program
+can you open the calendar,open_program
+launch Zoom,open_program
+can you start the image viewer,open_program
+can you launch OBS Studio,open_program
+can you start Postman,open_program
+open the settings,open_program
+can you launch Dropbox,open_program
+can you start the code editor,open_program
+open the screen recorder for me,open_program
+launch the IDE please,open_program
+please open Notion,open_program
+open iTerm,open_program
+launch Wireshark,open_program
+start the program,open_program
+open FileZilla for me,open_program
+launch the chat app please,open_program
+can you open PyCharm,open_program
+open Signal for me,open_program
+please open GNOME Terminal,open_program
+can you launch the terminal emulator,open_program
+open the terminal for me,open_program
+can you open Thunderbird,open_program
+start CLion,open_program
+open Vim,open_program
+can you start Unity,open_program
+launch Emacs,open_program
+launch the file explorer,open_program
+please open Kdenlive,open_program
+start Audacity for me,open_program
+can you start Rider,open_program
+start the download manager,open_program
+open the browser,open_program
+can you start Files,open_program
+open Xcode for me,open_program
+start Word,open_program
+can you open Task Manager,open_program
+start Photoshop for me,open_program
+start AnyDesk for me,open_program
+open Spotify,open_program
+open Unreal Engine for me,open_program
+can you open WebStorm,open_program
+start Transmission,open_program
+please open Jupyter,open_program
+can you launch VS Code,open_program
+start Firefox,open_program
+launch TeamViewer please,open_program
+launch Dolphin please,open_program
+can you launch the text editor,open_program
+please open Illustrator,open_program
+open HandBrake,open_program
+start the calculator,open_program
+can you launch Android Studio,open_program
+launch Windows Terminal,open_program
+can you launch the mail client,open_program
+open Nautilus for me,open_program
+start the video call app for me,open_program
+can you open Chrome,open_program
+open VLC for me,open_program
+open Slack,open_program
+please open Notepad++,open_program
+can you open the file manager,open_program
+can you start the photo editor,open_program
+open Asana for me,open_program
+resume audio playback,resume
+play on from here,resume
+keep it playing,resume
+keep the playlist going,resume
+get back to the music,resume
+back to the music please,resume
+music please continue,resume
+pick it back up,resume
+let the playlist continue,resume
+resume the current track,resume
+resume playing my song,resume
+resume where we left off,resume
+resume from here,resume
+resume playing please,resume
+continue streaming please,resume
+music on again please,resume
+play on,resume
+keep the tunes going,resume
+play music again,resume
+keep the song going,resume
+play the song again please,resume
+music back on please,resume
+keep the track rolling,resume
+resume playback please,resume
+get the sound back on,resume
+get the playlist going again,resume
+resume the current song please,resume
+go back to playing,resume
+continue the playlist please,resume
+resume listening,resume
+resume the audio please,resume
+let it keep playing,resume
+continue playing my music,resume
+keep this going,resume
+unfreeze the music,resume
+start the song again,resume
+let's continue the song,resume
+don't pause let it continue,resume
+don't stop it keep going,resume
+resume from where it paused,resume
+restart the playback,resume
+resume this track please,resume
+turn the music back on,resume
+resume streaming,resume
+carry on with the song,resume
+let's keep listening,resume
+start it back up please,resume
+continue where we stopped,resume
+carry on playing,resume
+let the track keep going,resume
+hold music please,pause
+put on hold please,pause
+stop the tune for now,pause
+put the song on hold,pause
+hold the song,pause
+stop this song for now,pause
+mute and pause the music,pause
+hold the playback for a bit,pause
+put this on hold,pause
+give the music a break,pause
+cut it for a bit,pause
+freeze the current track,pause
+quiet the track for now,pause
+take a break from music,pause
+pause the audio please,pause
+pause the current audio,pause
+take a pause,pause
+quiet down for a bit,pause
+hold the current song,pause
+pause my track,pause
+hold on pause,pause
+stop the current track,pause
+freeze this track,pause
+pause the music please,pause
+silence it for a moment,pause
+stop the track for now,pause
+pause my song please,pause
+pause my playlist please,pause
+pause playback please,pause
+give it a rest,pause
+pause right now,pause
+pause the sound,pause
+pause the tune,pause
+pause this please,pause
+hold playback please,pause
+stop briefly,pause
+pause the current playlist,pause
+pause the current track please,pause
+stop for a second please,pause
+can you hold the music,pause
+hold the tune,pause
+pause the current tune,pause
+can you hold this,pause
+pause the song for a bit,pause
+pause it for now,pause
+pause everything please,pause
+put a pause on this,pause
+suspend playback,pause
+hold that thought pause music,pause
+stop for now please,pause
+skip forward please,next
+fast forward please,next
+advance please,next
+play the following song,next
+go on to next,next
+move to next please,next
+play something else next,next
+play something new next,next
+advance to next song,next
+move on to the next one,next
+next song please go,next
+play the upcoming song,next
+play the next tune,next
+move along to next,next
+next track now please,next
+next one please go,next
+next tune please,next
+skip to the following track,next
+advance the playlist please,next
+let's hear the next one,next
+next song now,next
+go to the next tune,next
+jump to next song please,next
+skip ahead please,next
+let's skip this,next
+go to the following track,next
+skip this song now,next
+skip this and continue,next
+next track please,next
+move forward please,next
+forward to the next song,next
+next up please,next
+skip and play next,next
+skip ahead to next song,next
+move to the next tune,next
+onward to next track,next
+skip this track now,next
+skip this and play next,next
+I want the next track,next
+go to the upcoming track,next
+jump ahead to next,next
+go forward please,next
+move past this song,next
+forward please,next
+jump to next please,next
+next please skip it,next
+next please go on,next
+play what comes after,next
+go past this one,next
+let's move to the next track,next
+hop back to the last track,previous
+go to previous song please,previous
+play what came before,previous
+previous track please go,previous
+previous one now please,previous
+return to the song before,previous
+play prior track,previous
+return to last song please,previous
+go backward a song,previous
+go to prior song,previous
+rewind a track please,previous
+back to earlier track please,previous
+back to the earlier one,previous
+return to earlier track,previous
+go back a track please,previous
+previous track now please,previous
+back to that song,previous
+go to earlier track,previous
+back to the earlier track,previous
+return to prior track,previous
+play the song from before,previous
+play the one before this,previous
+go to the song before this,previous
+go to the track before this,previous
+go back to earlier song,previous
+back one track please,previous
+previous song now,previous
+return to the earlier song,previous
+back a track please,previous
+play the track before this,previous
+go to the earlier one,previous
+play the one before,previous
+return to what was playing,previous
+reverse to the previous song,previous
+previous please go back now,previous
+play the earlier track,previous
+back to the one before,previous
+back to the last one,previous
+play the last track please,previous
+return to previous please,previous
+back to prior song,previous
+go back one track please,previous
+return to earlier song,previous
+go back to that song,previous
+back please go,previous
+go back to prior song,previous
+previous please now,previous
+go back to the earlier song,previous
+play the prior track please,previous
+go back please,previous
+check system for updates,update
+update all repositories,update
+update software packages,update
+update all my software,update
+apply system patches,update
+update packages now,update
+run the upgrade command,update
+update all software,update
+refresh package list and upgrade,update
+run pacman -Syu,update
+update my machine,update
+keep the system updated,update
+update repositories and packages,update
+run the update command,update
+run apt update,update
+check if updates are available,update
+perform a system upgrade,update
+install the latest updates,update
+refresh and upgrade system,update
+apply pending system updates,update
+make sure everything is updated,update
+update my computer,update
+get the system current,update
+sync packages and update,update
+refresh updates please,update
+get system updates please,update
+run the system upgrade please,update
+check and apply updates,update
+run software update,update
+run update and upgrade,update
+sync and upgrade packages,update
+update the distro,update
+update everything on my system,update
+install any pending updates,update
+update packages and system,update
+check for available updates,update
+check for new updates,update
+update installed software,update
+install updates now please,update
+install available package updates,update
+run full upgrade please,update
+update the packages please,update
+update the OS please,update
+upgrade all installed packages,update
+run dnf upgrade,update
+upgrade the operating system,update
+run a full system upgrade,update
+apply all updates now,update
+apply the latest patches,update
+update firmware and packages,update
+what's the day today please,date
+do you know today's date,date
+what day and date is it,date
+what's the day and month,date
+can you give me today's date,date
+what's the exact date today,date
+give me the exact date,date
+tell me if it's a weekday,date
+is today the weekend,date
+tell me what today is,date
+is it Sunday today,date
+what number date is today,date
+today's day please,date
+current day and date,date
+is it a weekday today,date
+what's the date currently,date
+tell me the date please,date
+current date please give it,date
+current weekday please,date
+what day is it right now,date
+tell me the date today,date
+what day is this,date
+check today's date for me,date
+give me today's day,date
+what's the date and day,date
+what's the date this week,date
+what's today in numbers,date
+tell me what day today is,date
+give me the current weekday,date
+what's the current weekday,date
+today's full date please,date
+is today Friday,date
+what's today's full date,date
+what day of the week is today,date
+give the date please,date
+today's date and day please,date
+what's the date right now,date
+what's the date this instant,date
+tell me the current day,date
+what day is today please,date
+what day number is it,date
+date check please,date
+give me the day and date please,date
+what's the date this month,date
+tell me the weekday please,date
+what day is now,date
+tell me the month and day,date
+what's the date today please,date
+what's the current day,date
+what date do we have today,date
+tell me the artist name,get_music
+what's the title of this track,get_music
+what's the name of this tune,get_music
+tell me who sings this,get_music
+who is this singer,get_music
+who's behind this song,get_music
+who's the artist of this song,get_music
+what's playing at the moment,get_music
+tell me what's on right now,get_music
+who made this track,get_music
+name the song currently playing,get_music
+what's the current track title,get_music
+who is singing right now,get_music
+tell me the song title please,get_music
+what's the track title,get_music
+name this tune please,get_music
+what music is this called,get_music
+what's the name of the song,get_music
+what's the song title,get_music
+what band is this,get_music
+name the current track please,get_music
+identify the current song,get_music
+identify this tune,get_music
+tell me this track's name,get_music
+name the artist playing now,get_music
+name the current song,get_music
+tell me who made this song,get_music
+who is the singer,get_music
+what album is this from,get_music
+tell me this song's name,get_music
+what's the artist name,get_music
+who sang this track,get_music
+identify the artist playing,get_music
+what song is currently on,get_music
+what song title is this,get_music
+what's this song called please,get_music
+name the artist please,get_music
+who wrote this song,get_music
+who performs this song,get_music
+identify the music playing,get_music
+what song is on now,get_music
+what's this tune called,get_music
+what track is currently on,get_music
+tell me the artist please,get_music
+identify the song please,get_music
+identify who's singing,get_music
+tell me who's singing,get_music
+what's this track called,get_music
+what music is currently on,get_music
+identify this artist,get_music
+play some indie music,play_music
+put on Cheap Thrills by Ed Sheeran,play_music
+play Cruel Summer,play_music
+put on a chill playlist,play_music
+play Wrecking Ball,play_music
+put on Faded by Ariana Grande,play_music
+play something upbeat,play_music
+play Uptown Funk,play_music
+put on Perfect by Sia,play_music
+put on Take On Me by Rihanna,play_music
+put on Wrecking Ball by Imagine Dragons,play_music
+put on Firework by Coldplay,play_music
+play something for studying,play_music
+play Thunder,play_music
+play Perfect,play_music
+play some electronic music,play_music
+put on Someone Like You by Ariana Grande,play_music
+put on Sugar by Adele,play_music
+play Sorry,play_music
+put on Vampire by Bruno Mars,play_music
+start a workout playlist,play_music
+put on Roar by Bruno Mars,play_music
+play Anti-Hero,play_music
+put on Believer by Adele,play_music
+put on Havana by Taylor Swift,play_music
+play Titanium,play_music
+put on a road trip playlist,play_music
+play Radioactive,play_music
+put on Symphony by Drake,play_music
+play Someone Like You,play_music
+put on Closer by Sia,play_music
+play Believer,play_music
+play Vampire,play_music
+play Symphony,play_music
+put on something mellow,play_music
+play Faded,play_music
+play Shivers,play_music
+play Levitating,play_music
+put on Sorry by Calvin Harris,play_music
+put on Thunder by Calvin Harris,play_music
+play Cheap Thrills,play_music
+put on Anti-Hero by Dua Lipa,play_music
+put on Levitating by Ed Sheeran,play_music
+play Stay With Me,play_music
+start playing pop music,play_music
+play Counting Stars,play_music
+play some jazz,play_music
+play Firework,play_music
+put on Titanium by Imagine Dragons,play_music
+play Closer,play_music
+can you start Docker Desktop,open_program
+open Telegram,open_program
+can you start Telegram,open_program
+open Photoshop,open_program
+open PyCharm,open_program
+open Emacs,open_program
+can you start Signal,open_program
+open Atom,open_program
+launch Terminal please,open_program
+can you start Firefox,open_program
+can you start Sublime Text,open_program
+can you start Krita,open_program
+launch GitHub Desktop please,open_program
+open OBS,open_program
+can you start Terminal,open_program
+launch Excel please,open_program
+open Firefox,open_program
+launch Firefox please,open_program
+open Zoom,open_program
+can you start Photoshop,open_program
+can you start Spotify,open_program
+open Thunderbird,open_program
+launch OBS please,open_program
+launch Docker Desktop please,open_program
+launch Sublime Text please,open_program
+launch Android Studio please,open_program
+launch GitKraken please,open_program
+launch Audacity please,open_program
+launch NetBeans please,open_program
+open VLC,open_program
+open GitKraken,open_program
+can you start Nautilus,open_program
+open Krita,open_program
+can you start OBS,open_program
+launch Nautilus please,open_program
+can you start Kdenlive,open_program
+open Discord,open_program
+can you start PowerPoint,open_program
+open VS Code,open_program
+open Android Studio,open_program
+launch Thunderbird please,open_program
+can you start Notion,open_program
+can you start GIMP,open_program
+open Chrome,open_program
+open Word,open_program
+open Nautilus,open_program
+launch VS Code please,open_program
+launch Chrome please,open_program
+launch Blender please,open_program
+open Notion,open_program
+can you install virt-manager,install_program
+can you install libreoffice,install_program
+I need mangohud installed,install_program
+please install musescore for me,install_program
+can you install jupyter,install_program
+can you install calibre,install_program
+set up qbittorrent for me,install_program
+install krita,install_program
+install jdk-openjdk,install_program
+add pandoc to my system,install_program
+I need calibre installed,install_program
+add ansible to my system,install_program
+I need signal-desktop installed,install_program
+set up thunderbird for me,install_program
+please install neofetch for me,install_program
+get git installed on my system,install_program
+install make,install_program
+I need blender installed,install_program
+can you install rsync,install_program
+get nodejs installed on my system,install_program
+set up ansible for me,install_program
+get ncdu installed on my system,install_program
+set up cmake for me,install_program
+add flatpak to my system,install_program
+get vlc installed on my system,install_program
+get wireshark installed on my system,install_program
+set up maven for me,install_program
+install libreoffice,install_program
+set up gcc for me,install_program
+get docker installed on my system,install_program
+add mpv to my system,install_program
+get imagemagick installed on my system,install_program
+get zoom installed on my system,install_program
+I need firefox installed,install_program
+get bat installed on my system,install_program
+please install transmission for me,install_program
+add handbrake to my system,install_program
+install nodejs,install_program
+get ranger installed on my system,install_program
+install tcpdump,install_program
+set up mpv for me,install_program
+install wine,install_program
+can you install openssh,install_program
+I need ffmpeg installed,install_program
+I need wget installed,install_program
+get thunderbird installed on my system,install_program
+can you install vim,install_program
+install timeshift,install_program
+install mangohud,install_program
+please install python for me,install_program
+add okular to my system,install_program
+get handbrake installed on my system,install_program
+add unzip to my system,install_program
+I need htop installed,install_program
+I need nmap installed,install_program
+set up redis for me,install_program
+install jupyter,install_program
+install p7zip,install_program
+please install discord for me,install_program
+can you install hugo,install_program
+add nmap to my system,install_program
+please install calibre for me,install_program
+add tcpdump to my system,install_program
+I need musescore installed,install_program
+install mariadb,install_program
+add yarn to my system,install_program
+please install filezilla for me,install_program
+install qbittorrent,install_program
+please install rsync for me,install_program
+please install firefox for me,install_program
+add audacity to my system,install_program
+get vim installed on my system,install_program
+can you install terraform,install_program
+install lutris,install_program
+get blender installed on my system,install_program
+install clang,install_program
+install wget,install_program
+set up docker for me,install_program
+please install telegram for me,install_program
+add timeshift to my system,install_program
+I need virtualbox installed,install_program
+get tree installed on my system,install_program
+get python installed on my system,install_program
+get fd installed on my system,install_program
+set up fd for me,install_program
+please install snapd for me,install_program
+install fd,install_program
+can you install nginx,install_program
+I need ncdu installed,install_program
+set up ffmpeg for me,install_program
+install rsync,install_program
+add calibre to my system,install_program
+get signal-desktop installed on my system,install_program
+get nmap installed on my system,install_program
+install curl,install_program
+please install rustup for me,install_program
+add nginx to my system,install_program
+add gnome-tweaks to my system,install_program
+I need git installed,install_program
+please install handbrake for me,install_program
+please install zsh for me,install_program
+set up postman for me,install_program
+I need filezilla installed,install_program
+set up gradle for me,install_program
+I need ripgrep installed,install_program
+install htop,install_program
+can you install tmux,install_program
+I need zoom installed,install_program
+can you install gnome-tweaks,install_program
+can you install kdenlive,install_program
+install snapd,install_program
+set up wine for me,install_program
+add gradle to my system,install_program
+can you install handbrake,install_program
+get snapd installed on my system,install_program
+set up inkscape for me,install_program
+please install steam for me,install_program
+install calibre,install_program
+I need tcpdump installed,install_program
+get libreoffice installed on my system,install_program
+install rustup,install_program
+please install fd for me,install_program
+please install gcc for me,install_program
+get tcpdump installed on my system,install_program
+please install obs-studio for me,install_program
+set up rustup for me,install_program
+install mpv,install_program
+add jupyter to my system,install_program
+I need flatpak installed,install_program
+I need vim installed,install_program
+add nodejs to my system,install_program
+get ansible installed on my system,install_program
+get calibre installed on my system,install_program
+install npm,install_program
+get wine installed on my system,install_program
+set up zathura for me,install_program
+add wget to my system,install_program
+please install redis for me,install_program
+please install valgrind for me,install_program
+install ardour,install_program
+add krita to my system,install_program
+I need qemu installed,install_program
+get hugo installed on my system,install_program
+please install postman for me,install_program
+get gimp installed on my system,install_program
+please install bat for me,install_program
+install unzip,install_program
+can you install qbittorrent,install_program
+can you install wget,install_program
+I need gparted installed,install_program
+can you install signal-desktop,install_program
+please install maven for me,install_program
+I need python installed,install_program
+can you install make,install_program
+can you install ardour,install_program
