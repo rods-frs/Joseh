@@ -28,6 +28,9 @@ class FlatpakModuleError(ToolboxError):
 class ProgramNotFound(ToolboxError):
     pass
 
+class ProgramAlreadyInstalled(ToolboxError):
+    pass
+
 class SpotifyError(JosehError):
     _logger = logging.getLogger("SP")
     def __init__(self, message):
@@ -46,5 +49,10 @@ class BICommandNotFound(BuiltInCommandsError):
 
 class CustomCommandError(JosehError):
     _logger = logging.getLogger("CC")
+    def __init__(self, message, _logger):
+        super().__init__(message, _logger)
+
+class CredentialCheckerError(JosehError):
+    _logger = logging.getLogger("CRE")
     def __init__(self, message, _logger):
         super().__init__(message, _logger)
