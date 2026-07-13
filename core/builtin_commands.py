@@ -1,6 +1,5 @@
 import logging
 import keyring
-from dotenv import set_key
 from core.error_handler import BuiltInCommandsError, BICommandNotFound
 from tools.toolbox import toolboxv2
 from unittest.mock import patch, MagicMock
@@ -21,19 +20,6 @@ def direct_command_mode(spotify_credentials_creation):
                     value()
                 valid_command = True
         if not valid_command: BuiltInCommandsError("The code {user_command} is not a valid code. Please try again or type '0' to exit.")
-
-def check_system_credentials():
-    bic_logger.debug("Checking keyring for system password")
-    try:
-        user_password = keyring.get_password("joseh", "system_password")
-        if user_password:
-            bic_logger.debug(f"System password found: {"*"*len(user_password)}")
-            return user_password
-        else:
-            bic_logger.debug("System password was not found in the keyring")
-            return False
-    except Exception as e:
-        BuiltInCommandsError(f"Failed to check for the system credentials: {e}")
 
 def create_system_credentials():
     bic_logger.info("Starting creation of system credentials")
@@ -76,7 +62,6 @@ def create_spotify_credentials(spotify_function):
     spotify_function()
 
 def execute_specific_function():
-    package = toolboxv2.search_flatpak("pods")
-    toolboxv2.install_flatpak(package)
+    toolboxv2.install_from_pm("vim")
 
 commands_map = {1: create_system_credentials, 2: delete_user_password, 3: create_spotify_credentials, 4:execute_specific_function}
