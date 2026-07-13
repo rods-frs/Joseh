@@ -1,6 +1,7 @@
 import logging
 
 def configure_logging():
+    global main_logger, toolbox_logger, spotify_logger, nlp_logger, bic_logger, cc_logger, session_logger, cre_logger
 #//main logger
     main_logger = logging.getLogger("main")
     main_logger.setLevel(logging.DEBUG)
@@ -56,9 +57,34 @@ def configure_logging():
     bic_logger.addHandler(universal_handler)
     bic_logger.propagate = False
 
-    #//builtincommands logger
+    #//customcommand logger
+    cc_logger = logging.getLogger("CC")
+    cc_logger.setLevel(logging.DEBUG)
+    cc_logger.addHandler(logging.FileHandler("core/logs/cc.log"))
+    cc_logger.addHandler(universal_handler)
+    cc_logger.propagate = False
+
+    #//session logger
     session_logger = logging.getLogger("SESSION")
     session_logger.setLevel(logging.DEBUG)
     session_logger.addHandler(logging.FileHandler("core/logs/session.log"))
     session_logger.addHandler(universal_handler)
     session_logger.propagate = False
+
+    #//credentialChecker logger
+    cre_logger = logging.getLogger("CRE")
+    cre_logger.setLevel(logging.DEBUG)
+    cre_logger.addHandler(logging.FileHandler("core/logs/cre.log"))
+    cre_logger.addHandler(universal_handler)
+    cre_logger.propagate = False
+
+def disable_debug_mode():
+    toolbox_logger.setLevel(logging.INFO)
+    main_logger.setLevel(logging.INFO)
+    toolbox_logger.setLevel(logging.INFO)
+    spotify_logger.setLevel(logging.INFO)
+    nlp_logger.setLevel(logging.INFO)
+    bic_logger.setLevel(logging.INFO)
+    cc_logger.setLevel(logging.INFO)
+    session_logger.setLevel(logging.INFO)
+    cre_logger.setLevel(logging.INFO)
