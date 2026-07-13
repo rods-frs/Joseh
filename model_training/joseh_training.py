@@ -30,7 +30,8 @@ labels = [
     "date",
     "get_music",
     "open_program",
-    "play_music"
+    "play_music",
+    "install_program"
 ]
 
 #//
@@ -43,8 +44,8 @@ for label in labels:
 #//
 
 #parameters
-TRAINING_CSV = r"model_training/cat_training_data_v1.csv"
-MODEL_NAME = "joseh_cat_model_v3"
+TRAINING_CSV = r"model_training/cat_training_data_v2.csv"
+MODEL_NAME = "joseh_cat_model_v4"
 
 cat_training_data = []
 
@@ -123,11 +124,11 @@ for _ in range(interactions):
 
     elif last_smooth_loss - smooth_loss < DELTA:
         patience -= 1
-        logging.info(f"Loss: {current_loss:.4f} | Last: {last_loss:.4f} | Patience: {patience}")
+        logging.info(f"Loss: {current_loss:.4f} | Last: {last_smooth_loss:.4f} | Patience: {patience}")
         logging.info("Not enough difference between errors, -1 patience point")
 
     else:
-        logging.info(f"Loss: {current_loss:.4f} | Last: {last_loss:.4f} | Patience: {patience}")
+        logging.info(f"Loss: {current_loss:.4f} | Last: {last_smooth_loss:.4f} | Patience: {patience}")
 
 logging.info("Finished training")
 while True:
