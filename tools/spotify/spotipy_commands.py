@@ -11,20 +11,6 @@ spotify_logger = logging.getLogger("SP")
 
 #credential stuff
 
-def check_spotify_credential():
-    try:
-        spotify_logger.debug("Checking .env for user spotify credential")
-        load_dotenv()
-        credential_present = True if os.getenv("SPOTIFY_CLIENT_ID") else False
-        if credential_present:
-            spotify_logger.debug("Credential found!")
-            return True
-        else:
-            spotify_logger.debug("Credential is not present")
-            return False
-    except Exception as e:
-        raise SpotifyError(f"Error while checking the user credentials: {e}")
-
 def create_credential():
     try:
         spotify_logger.info("Starting Spotify credential creation")
@@ -144,7 +130,8 @@ def play_music(play_music_idx, special_clauses, ner_function):
     music_name = ner_function(text, "music")
     track_id = get_track_id(music_name)
     play_track(track_id)
-    return music_name
+    track_name = get_current_track()
+    return track_name
 
 def play_track(uri):
     spotify_logger.debug(f"Trying to play the track with the URI: {uri}")
