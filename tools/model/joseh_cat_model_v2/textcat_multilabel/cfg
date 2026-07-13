@@ -6,7 +6,9 @@
     "previous",
     "update",
     "date",
-    "get_music"
+    "get_music",
+    "open_program",
+    "play_music"
   ],
   "threshold":0.5
 }

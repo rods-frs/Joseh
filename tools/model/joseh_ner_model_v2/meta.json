@@ -17,21 +17,16 @@
     "mode":"default"
   },
   "labels":{
-    "textcat_multilabel":[
-      "resume",
-      "pause",
-      "next",
-      "previous",
-      "update",
-      "date",
-      "get_music"
+    "ner":[
+      "music",
+      "program"
     ]
   },
   "pipeline":[
-    "textcat_multilabel"
+    "ner"
   ],
   "components":[
-    "textcat_multilabel"
+    "ner"
   ],
   "disabled":[
 

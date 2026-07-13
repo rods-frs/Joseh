@@ -161,3 +161,10 @@ cython_debug/
 testsORtrash.py
 temp_code.py
 testsORtrash.py
+
+#vosk model
+tools/stt/vosk-model-en-us-0.22
+tools/stt/vosk-model-en-us-0.22.zip
+
+#vscode shit
+.vscode
