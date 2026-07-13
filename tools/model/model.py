@@ -21,7 +21,7 @@ def split_command(text):
     except Exception as e:
         raise NLPError(f"Failed to split command: {e}")
 
-def init_models(CAT_MODEL_PATH='tools/model/joseh_cat_model_v3', NER_MODEL_PATH='tools/model/joseh_ner_model_v2'):
+def init_models(CAT_MODEL_PATH='tools/model/joseh_cat_model_v4', NER_MODEL_PATH='tools/model/joseh_ner_model_v2'):
     nlp_logger.debug("Starting init of the NLP models")
     try:
         global base_model
@@ -40,7 +40,7 @@ def detect_intent(text, threshold=0.5):
         clauses = split_command(text)
         detected_commands = []
         special_clauses = []
-        special_commands = ["play_music", "open_program"]
+        special_commands = ["play_music", "open_program", "install_program"]
         for clause in clauses:
             doc = cat_model(clause)
             for intent, score in doc.cats.items():
