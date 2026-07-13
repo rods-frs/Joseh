@@ -4,7 +4,7 @@ import subprocess
 import platform
 import distro
 import keyring
-from core.error_handler import ToolboxError, FlatpakModuleError, ProgramNotFound
+from core.error_handler import ToolboxError, FlatpakModuleError, ProgramNotFound, ProgramAlreadyInstalled
 from datetime import datetime
 import shutil
 
@@ -153,17 +153,111 @@ def install_flatpak(package_id):
     except Exception as e:
         FlatpakModuleError(f"Failed to install the package: stderr: {getattr(e, 'stderr', 'N/A')} | error: {e}")
 
-command_index = {"update":update_system, "date":get_date, "open_program":open_program}
+def check_if_program_installed_pm(package_name):
+    arch_query = ["pacman", "-Q", package_name]
+    fedora_query = ["dnf", "-q", package_name]
+    debian_query = ["dpkg", "-s", package_name]
+    query_schema = {"arch": arch_query, "debian": debian_query, "fedora": fedora_query}
+    try:
+        toolbox_logger.info(f"Checking if the package {package_name} is already installed")
+        for os, command in query_schema.items():
+            if os in OS.lower():
+                toolbox_logger.debug("OS command found! Executing...")
+                query_result = subprocess.run(command, capture_output=True)
+                return_code = query_result.returncode
+                return True if not return_code else False
+    except Exception as e:
+        pass 
+
+def check_if_program_exists_pm(package_name):
+    arch_search = ["sh", "-c", f"pacman -Ss {package_name} | grep '^[a-z]' | awk -F'/| ' '{{print $2}}'"]
+    debian_search = ["sh", "-c", f"apt-cache search {package_name} | awk '{{print $1}}'"]
+    fedora_search = ["sh", "-c", f"dnf search {package_name} | grep -E '^[a-zA-Z0-9._-]+\\.' | awk -F'.' '{{print $1}}'"]
+    search_schema = {"arch": arch_search, "debian": debian_search, "fedora": fedora_search}
+    try:
+        toolbox_logger.info(f"Checking if {package_name} package exists")
+        for os, command in search_schema.items():
+            if os in OS.lower():
+                toolbox_logger.debug(f"OS matched! Executing command for the OS {os}")
+                query_result = subprocess.run(command,text=True,capture_output=True,check=True)
+                query_lines = query_result.stdout.splitlines()
+                if query_lines and "no matches found" not in query_lines[0]: 
+                    toolbox_logger.debug("Package was found in the system repositories")
+                    return True
+                else: 
+                    raise ProgramNotFound(f"The package {package_name} was not found in the system repositories")
+    except ProgramNotFound:
+        raise
+    except Exception as e:
+        raise ToolboxError(f"Failed to search for the package {package_name}. Error: {e} | stderr: {getattr(e, 'stderr', 'N/A')}")
+
+def install_from_pm(package_name):
+    try:
+        program_already_installed = ""
+        check_if_program_exists_pm(package_name)
+        program_already_installed = check_if_program_installed_pm(package_name)
+    except ProgramNotFound:
+        raise
+    except ToolboxError:
+        raise
+    if not program_already_installed:
+        arch_install = ["sudo", "-S", "pacman", "-S", "--noconfirm", package_name]
+        debian_install = ["sudo", "-S", "apt-get", "install", "-y", package_name]
+        fedora_install = ["sudo", "-S", "dnf", "install", "-y", package_name]
+        install_schema = {"arch": arch_install, "debian": debian_install, "fedora": fedora_install}
+        try:
+            toolbox_logger.info("Installing package. This can take a while depending of the package size and dependencies")
+            toolbox_logger.info("Getting user password")
+            _USER_PASSWORD = keyring.get_password("joseh", "system_password")
+            toolbox_logger.debug("Getting the command for the current OS")
+            for os, command in install_schema.items():
+                if os in OS.lower():
+                    toolbox_logger.debug(f"Executing command for the OS {os}")
+                    subprocess.run(command,input=f"{_USER_PASSWORD}\n",text=True,capture_output=True,check=True)
+                    toolbox_logger.info("Package installed!")
+        except Exception as e:
+            raise ToolboxError(f"Failed to install the package {package_name}. Error: {e} | stderr: {getattr(e, 'stderr', 'N/A')}")
+    elif program_already_installed: raise ProgramAlreadyInstalled(f"The package {package_name} is already installed")
+
+def install_program(ner_function, special_clauses, special_clauses_index):
+    clause = special_clauses[int(special_clauses_index)]
+    program = str(ner_function(clause, "program"))
+    program = program.lower()
+    program_found = False
+    if program:
+        toolbox_logger.info(f"Installing the program {program}")
+        try:
+            install_from_pm(program)
+            program_found = True
+        except ProgramNotFound:
+            toolbox_logger.debug(f"{program} was not found in the system repositories. Checking flatpak.")
+        except ProgramAlreadyInstalled: program_found = True
+        except ToolboxError as e:
+            pass
+        try:
+            if not program_found:
+                package_id = search_flatpak(program)
+                if package_id not in installed_flatpaks:
+                    if package_id: install_flatpak(package_id)
+                    else: raise ProgramNotFound("Package was not found in the Flatpak repositories")
+                else: ProgramAlreadyInstalled(f"The Flatpak {program} is already installed.")
+        except ProgramNotFound:
+            toolbox_logger.info("The package named was not found.")
+        except ToolboxError:
+            pass
+
+command_index = {"update":update_system, "date":get_date, "open_program":open_program, "install_program":install_program}
 
 def execute_toolbox_commands(commands_list, special_clauses, ner_function):
+    special_commands = ["open_program", "install_program"]
     toolbox_logger.debug(f"Executing commands: {commands_list}")
-    special_clauses_index = -1
+    special_clauses_index = 0
     for command in commands_list:
         try:
             action = command_index.get(command)
-            if command == "open_program":
-                special_clauses_index += 1
+            if command in special_commands:
                 action(ner_function, special_clauses, special_clauses_index)
+                special_clauses_index += 1
             else:
                 action()
         except ToolboxError:
