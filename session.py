@@ -5,23 +5,22 @@ from tools.spotify import spotipy_commands
 from tools.model import model
 from tools.toolbox import toolboxv2
 from core.error_handler import JosehError, InvalidCommand
+from core.credential_checker import check_all_credentials
 
 session_logger = logging.getLogger("SESSION")
-spotify_credentials_present = spotipy_commands.check_spotify_credential()
-system_credentials_present = builtin_commands.check_system_credentials()
-sp_detected_commands = []
-tb_detected_commands = []
+credentials_present = check_all_credentials()
+
 special_commands = [""]
 
 def execute_general_command(detected_commands, special_clauses=[]):
     SPOTIFY_COMMANDS = ['resume', 'pause', 'next', 'previous', 'get_music', 'play_music']
     for command in detected_commands:
         if command in SPOTIFY_COMMANDS:
-            if spotify_credentials_present:
+            if "SP" in credentials_present:
                     sp_detected_commands.append(command)
             else: session_logger.warning(f"Spotify credentials were not set. Ignoring command {command}")
         else:
-            if not system_credentials_present and command == "update": session_logger.error(f"System credentials were not set. Ignoring command {command}")
+            if not "SY" in credentials_present and command == "update | install": session_logger.error(f"System credentials were not set. Ignoring command {command}")
             else:
                 tb_detected_commands.append(command)
     try:
@@ -35,8 +34,11 @@ def execute_general_command(detected_commands, special_clauses=[]):
 
 def session(active_flags):
     print("=/"*10)
-    session_logger.info("New session started")
-    sp_detected_commands =[]
+    session_logger.debug("New session started")
+    detected_commands = []
+    global sp_detected_commands
+    global tb_detected_commands
+    sp_detected_commands = []
     tb_detected_commands = []
     valid_command = False
     special_command = False
@@ -76,5 +78,5 @@ def session(active_flags):
 
         if not special_command:
             execute_general_command(detected_commands, special_clauses)
-        session_logger.info("Session finished.")
+        session_logger.debug("Session finished.")
         return session_finished
