@@ -38,30 +38,23 @@ for name, value in flags.items():
 #//stt
 #stt_model = load_model('/home/rodrigo/Joseh/tools/stt/vosk-model-en-us-0.22')
 #mic_object = create_mic()
-
 #//initial credential check
 credentials_present = check_all_credentials()
-
 #//tts
 #voice.tts_configuration()
 #if mute_joseh: voice.mute_joseh()
-
 #//spotify
 if not "SP" in credentials_present:
     main_logger.warning("Spotify credentials are not present! To create type 'direct command mode' into Joseh and then type '3'.")
 else: 
     spotipy_commands.spotipy_configuration()
-
 #//system credentials check
 if not "SY" in credentials_present:
     main_logger.warning("System credentials were not set. To set please type 'direct command mode', then '1'.")
-
 #//initiate the OS variable
 main_logger.info(f"Detected OS: {toolboxv2.detect_os()}")
-
 #//nlp
 model.init_models()
-
 #//flatpak module
 toolboxv2.get_installed_flatpak_programs()
 

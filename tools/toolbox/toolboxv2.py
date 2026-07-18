@@ -7,6 +7,8 @@ import keyring
 from core.error_handler import ToolboxError, FlatpakModuleError, ProgramNotFound, ProgramAlreadyInstalled
 from datetime import datetime
 import shutil
+from rich.console import Console
+console = Console()
 
 toolbox_logger = logging.getLogger("TB")
 
@@ -36,7 +38,8 @@ def update_system():
         return
     try:
         toolbox_logger.debug("Executing update command.")
-        result = subprocess.run(command,input=f"{_USER_PASSWORD}\n",text=True,capture_output=True,check=True)
+        with console.status("Installing updates..."):
+            result = subprocess.run(command,input=f"{_USER_PASSWORD}\n",text=True,capture_output=True,check=True)
         updated_packages = []
         for line in result.stdout.splitlines():
             if "upgrading" in line.lower():
@@ -142,32 +145,16 @@ def search_flatpak(package_name):
             return package_id
         else: return None
     except Exception as e:
-        raise FlatpakModuleError(f"Failed to search for the package {package_name}: {getattr(e, 'stderr', 'N/A')} | error: {e}")
+        raise FlatpakModuleError(f"Failed to search for the package {package_name}: {e}")
         
 def install_flatpak(package_id):
     install_command = ['flatpak', 'install', '-y', package_id]
     try:
-        toolbox_logger.info(f"Trying to install app by the ID {package_id}...")
-        subprocess.run(install_command, text=True, capture_output=True, check=True)
+        with console.status(f"Trying to install app by the ID {package_id}..."):
+            subprocess.run(install_command, text=True, capture_output=True, check=True)
         toolbox_logger.info(f"Package installed!")
     except Exception as e:
-        FlatpakModuleError(f"Failed to install the package: stderr: {getattr(e, 'stderr', 'N/A')} | error: {e}")
-
-def check_if_program_installed_pm(package_name):
-    arch_query = ["pacman", "-Q", package_name]
-    fedora_query = ["dnf", "-q", package_name]
-    debian_query = ["dpkg", "-s", package_name]
-    query_schema = {"arch": arch_query, "debian": debian_query, "fedora": fedora_query}
-    try:
-        toolbox_logger.info(f"Checking if the package {package_name} is already installed")
-        for os, command in query_schema.items():
-            if os in OS.lower():
-                toolbox_logger.debug("OS command found! Executing...")
-                query_result = subprocess.run(command, capture_output=True)
-                return_code = query_result.returncode
-                return True if not return_code else False
-    except Exception as e:
-        pass 
+        FlatpakModuleError(f"Failed to install the package: {e}")
 
 def check_if_program_exists_pm(package_name):
     arch_search = ["sh", "-c", f"pacman -Ss {package_name} | grep '^[a-z]' | awk -F'/| ' '{{print $2}}'"]
@@ -182,6 +169,28 @@ def check_if_program_exists_pm(package_name):
                 query_result = subprocess.run(command,text=True,capture_output=True,check=True)
                 query_lines = query_result.stdout.splitlines()
                 if query_lines and "no matches found" not in query_lines[0]: 
+                    toolbox_logger.debug("Package was found in the system repositories")
+                    return True
+                else: 
+                    raise ProgramNotFound(f"The package {package_name} was not found in the system repositories")
+    except ProgramNotFound:
+        raise
+    except Exception as e:
+        raise ToolboxError(f"Failed to search for the package {package_name}. Error: {e} | stderr: {getattr(e, 'stderr', 'N/A')}")
+
+def check_if_program_exists_pm(package_name):
+    arch_search = ["sh", "-c", f"pacman -Ss {package_name} | grep '^[a-z]' | awk -F'/| ' '{{print $2}}'"]
+    debian_search = ["sh", "-c", f"apt-cache search {package_name} | awk '{{print $1}}'"]
+    fedora_search = ["sh", "-c", f"dnf search {package_name} | grep -E '^[a-zA-Z0-9._-]+\\.' | awk -F'.' '{{print $1}}'"]
+    search_schema = {"arch": arch_search, "debian": debian_search, "fedora": fedora_search}
+    try:
+        for os, command in search_schema.items():
+            if os in OS.lower():
+                with console.status(f"Checking if {package_name} package exists in the distro repo..."):
+                    query_result = subprocess.run(command,text=True,capture_output=True,check=True)
+                query_lines = query_result.stdout.splitlines()
+                matches = [l for l in query_lines if l.split("/")[-1].startswith(package_name)]
+                if matches and len(matches) >= 1 and "no matches found" not in query_lines[0]: 
                     toolbox_logger.debug("Package was found in the system repositories")
                     return True
                 else: 
@@ -207,13 +216,12 @@ def install_from_pm(package_name):
         install_schema = {"arch": arch_install, "debian": debian_install, "fedora": fedora_install}
         try:
             toolbox_logger.info("Installing package. This can take a while depending of the package size and dependencies")
-            toolbox_logger.info("Getting user password")
+            toolbox_logger.debug("Getting user password")
             _USER_PASSWORD = keyring.get_password("joseh", "system_password")
-            toolbox_logger.debug("Getting the command for the current OS")
             for os, command in install_schema.items():
                 if os in OS.lower():
-                    toolbox_logger.debug(f"Executing command for the OS {os}")
-                    subprocess.run(command,input=f"{_USER_PASSWORD}\n",text=True,capture_output=True,check=True)
+                    with console.status(f"Installing the program {package_name}"):
+                        subprocess.run(command,input=f"{_USER_PASSWORD}\n",text=True,capture_output=True,check=True)
                     toolbox_logger.info("Package installed!")
         except Exception as e:
             raise ToolboxError(f"Failed to install the package {package_name}. Error: {e} | stderr: {getattr(e, 'stderr', 'N/A')}")
@@ -230,7 +238,7 @@ def install_program(ner_function, special_clauses, special_clauses_index):
             install_from_pm(program)
             program_found = True
         except ProgramNotFound:
-            toolbox_logger.debug(f"{program} was not found in the system repositories. Checking flatpak.")
+            toolbox_logger.info(f"{program} was not found in the system repositories. Checking flatpak.")
         except ProgramAlreadyInstalled: program_found = True
         except ToolboxError as e:
             pass
